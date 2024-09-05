@@ -1,0 +1,15 @@
+/* default theme */
+:root {
+  --primary-color: #67d2c2;
+  --secondary-color: #ffde81;
+  --background-color: #f3f3f3;
+  --text-color: #333;
+}
+
+/* dark theme */
+[data-theme='dark'] {
+  --primary-color: #fe8113;
+  --secondary-color: #363636;
+  --background-color: #f3f3f3;
+  --text-color: #f5f5f5;
+}
