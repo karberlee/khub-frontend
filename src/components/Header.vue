@@ -6,16 +6,29 @@
       <button @click="replaceRouter('/user_list')">UserList</button>
       <button @click="changeTheme">theme</button>
     </div>
+    <Avatar 
+      :image="avaterLink"
+      name="John Doe"
+      size="3rem"
+      altText="John's Avatar"
+    />
+    <Avatar 
+      name="Jane Smith"
+      size="3rem"
+    />
   </header>
 </template>
 
 <script setup>
 import { ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
+import Avatar from '@/components/Avater.vue'
 
 const router = useRouter()
 
 const theme = ref(localStorage.getItem('theme') || 'light')
+
+const avaterLink = ref('src/assets/images/vue.ico')
 
 // Navigate to Home page
 const replaceRouter = function(path) {
