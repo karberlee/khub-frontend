@@ -9,3 +9,29 @@
     }
   ]
 }
+
+// {
+//   "compilerOptions": {
+//     "target": "esnext",                             // 编译目标的 ECMAScript 版本
+//     "module": "esnext",                             // 使用的模块系统
+//     "moduleResolution": "node",                     // 模块解析策略
+//     "lib": ["dom", "esnext"],                       // 包含的库文件
+//     "allowJs": true,                               // 允许编译 JavaScript 文件
+//     "jsx": "preserve",                             // JSX 转换方式
+//     "strict": true,                                // 启用所有严格类型检查选项
+//     "esModuleInterop": true,                       // 允许默认导入非 ES6 模块
+//     "skipLibCheck": true,                          // 跳过库文件的类型检查
+//     "forceConsistentCasingInFileNames": true,      // 确保文件名的大小写一致性
+//     "baseUrl": "./",                               // 基本目录，用于解析非相对模块
+//     "paths": {
+//       "@/*": ["src/*"]                            // 配置路径别名
+//     },
+//     "types": ["vite/client"],                      // 包含类型定义的库
+//     "noEmitOnError": true,                         // 当有错误时不输出文件
+//     "incremental": true,                           // 启用增量编译以提高编译速度
+//     "sourceMap": true                              // 生成源映射文件以便调试
+//   },
+//   "include": ["env.d.ts", "src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
+//   "exclude": ["node_modules", "dist"]
+// }
+
