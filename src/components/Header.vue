@@ -1,26 +1,22 @@
 <template>
   <header>
-    <div>Application Header</div>
-    <div>
-      <button @click="replaceRouter('/')">Home</button>
-      <button @click="replaceRouter('/user_list')">UserList</button>
-      <button @click="changeTheme">theme</button>
+    <div class="main-button">Header</div>
+    <div class="menus">
+      <div class="menu-button" @click="replaceRouter('/')">Home</div>
+      <div class="menu-button" @click="replaceRouter('/user_list')">UserList</div>
+      <div class="menu-button" @click="changeTheme">theme</div>
     </div>
     <Avatar 
-      :image="avaterLink"
-      name="John Doe"
+      :image="userInfo.avatar"
+      :name="userInfo.nickname"
       size="3rem"
-      altText="John's Avatar"
-    />
-    <Avatar 
-      name="Jane Smith"
-      size="3rem"
+      :altText="userInfo.nickname + ' Avatar'"
     />
   </header>
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
+import { ref, reactive, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import Avatar from '@/components/Avater.vue'
 
@@ -28,7 +24,11 @@ const router = useRouter()
 
 const theme = ref(localStorage.getItem('theme') || 'light')
 
-const avaterLink = ref('src/assets/images/vue.ico')
+const userInfo = reactive({
+  nickname: 'Hello',
+  avatar: 'src/assets/images/vue.ico',
+  email: 'email@example.com'
+})
 
 // Navigate to Home page
 const replaceRouter = function(path) {
@@ -49,19 +49,43 @@ watch(theme, (newTheme) => {
 document.documentElement.setAttribute('data-theme', theme.value)
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 header {
-  height: 3rem;
-  background-color: var(--primary-color);
-  padding: 1rem;
+  height: 5rem;
+  background-color: var(--background-color);
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-button {
-  margin: 0 0.5rem;
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
+.main-button {
+  height: 100%;
+  width: 10rem;
+  font-size: 2rem;
+  font-weight: bolder;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
 }
+
+.menus {
+  height: 100%;
+  display: flex;
+
+  .menu-button {
+    height: 100%;
+    min-width: 10rem;
+    display: grid;
+    place-items: center;
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    font-weight: bolder;
+    cursor: pointer;
+  }
+  
+  .menu-button:hover {
+    background-color: var(--secondary-color);
+  }
+}
+
 </style>
