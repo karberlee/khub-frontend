@@ -1,6 +1,6 @@
 <template>
   <footer>
-    <p>&copy; 2024 My Application Footer</p>
+    <div>&copy; 2024 My Application Footer</div>
   </footer>
 </template>
 
@@ -10,9 +10,11 @@
 
 <style scoped>
 footer {
-  height: 3rem;
+  height: 5rem;
+  color: var(--text-color);
   background-color: var(--primary-color);
-  padding: 1rem;
-  text-align: center;
+  font-weight: 500;
+  display: grid;
+  place-items: center;
 }
 </style>

@@ -42,6 +42,7 @@ const initials = computed(() => {
   border-radius: 50%;
   overflow: hidden;
   background-color: var(--background-color);
+  cursor: pointer;
   /* border: 2px solid #ddd; */
 }
 
