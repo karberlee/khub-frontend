@@ -72,6 +72,10 @@ document.documentElement.setAttribute("data-theme", theme.value);
 
 <style lang="scss" scoped>
 header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
   height: 5rem;
   background-color: var(--primary-color);
   display: flex;
