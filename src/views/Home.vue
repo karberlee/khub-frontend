@@ -13,6 +13,7 @@
 /* Home page styles */
 
 .home {
+  margin-top: 5rem;
   min-height: calc( 100vh - 10rem );
   background-color: var(--background-color);
 }
