@@ -4,9 +4,10 @@
 
     <div class="menus">
       <div class="menu-button" @click="replaceRouter('/')">Home</div>
-      <div class="menu-button" @click="replaceRouter('/user_list')">
-        UserList
+      <div class="menu-button" @click="replaceRouter('/users')">
+        Users
       </div>
+      <div class="menu-button" @click="replaceRouter('/notes')">Notes</div>
       <div class="menu-button" @click="changeTheme">theme</div>
     </div>
 
@@ -31,43 +32,43 @@
 </template>
 
 <script setup>
-import { ref, reactive, watch } from "vue";
-import { useRouter } from "vue-router";
-import Avatar from "@/components/Avater.vue";
+import { ref, reactive, watch } from "vue"
+import { useRouter } from "vue-router"
+import Avatar from "@/components/Avater.vue"
 
-const router = useRouter();
+const router = useRouter()
 
-const theme = ref(localStorage.getItem("theme") || "default");
+const theme = ref(localStorage.getItem("theme") || "default")
 
 const userInfo = reactive({
-  nickname: "Hello",
-  avatar: "src/assets/images/vue.ico",
+  nickname: "Hello World",
+  // avatar: "src/assets/images/vue.ico",
   email: "email@example.com",
-});
+})
 
 const avatarMenus = reactive([
   { icon: "mdi-pencil", title: "Edit" },
   { icon: "mdi-cog", title: "Setting" },
   { icon: "mdi-logout", title: "Logout" },
-]);
+])
 
 // Navigate to Home page
 const replaceRouter = function (path) {
-  router.push(path);
-};
+  router.push(path)
+}
 
 // change theme
 const changeTheme = function () {
-  theme.value = theme.value === "default" ? "dark" : "default";
-};
+  theme.value = theme.value === "default" ? "dark" : "default"
+}
 
 watch(theme, (newTheme) => {
-  document.documentElement.setAttribute("data-theme", newTheme);
-  localStorage.setItem("theme", newTheme);
-});
+  document.documentElement.setAttribute("data-theme", newTheme)
+  localStorage.setItem("theme", newTheme)
+})
 
 // Initialize theme
-document.documentElement.setAttribute("data-theme", theme.value);
+document.documentElement.setAttribute("data-theme", theme.value)
 </script>
 
 <style lang="scss" scoped>

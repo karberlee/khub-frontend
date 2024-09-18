@@ -7,7 +7,9 @@ import {
   VListItem,
   VListItemTitle,
   VBtn,
-  VIcon
+  VIcon,
+  VDataTable,
+  VTextField,
 } from 'vuetify/components'
 
 const vuetify = createVuetify({
@@ -18,6 +20,8 @@ const vuetify = createVuetify({
     VListItemTitle,
     VBtn,
     VIcon,
+    VDataTable,
+    VTextField
   },
 })
 
