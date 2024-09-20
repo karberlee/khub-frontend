@@ -10,6 +10,16 @@ import {
   VIcon,
   VDataTable,
   VTextField,
+  VTextarea,
+  VCard,
+  VCardTitle,
+  VCardText,
+  VCardActions,
+  VSpacer,
+  VContainer,
+  VRow,
+  VCol,
+  VDialog,
 } from 'vuetify/components'
 
 const vuetify = createVuetify({
@@ -21,7 +31,17 @@ const vuetify = createVuetify({
     VBtn,
     VIcon,
     VDataTable,
-    VTextField
+    VTextField,
+    VTextarea,
+    VCard,
+    VCardTitle,
+    VCardText,
+    VCardActions,
+    VSpacer,
+    VContainer,
+    VRow,
+    VCol,
+    VDialog,
   },
 })
 

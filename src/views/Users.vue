@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="global-content">
     <h2>Users Page</h2>
     <p>Welcome to the users page!</p>
   </div>

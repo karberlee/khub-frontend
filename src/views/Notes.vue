@@ -1,18 +1,37 @@
 <template>
-  <div class="notes">
-    <div>Notes Page</div>
-    <div>
-      <v-text-field
-        v-model="search"
-        label="Search"
-        prepend-inner-icon="mdi-magnify"
-        variant="outlined"
-      ></v-text-field>
-      <v-data-table
-        :headers="headers"
-        :items="desserts"
-        :search="search"
-      ></v-data-table>
+  <div class="global-content notes">
+    <div class="notes-content">
+      <div class="global-title">Notes Page</div>
+      <div class="">
+        <v-text-field
+          clearable
+          v-model="search"
+          label="Search"
+          prepend-inner-icon="mdi-magnify"
+          variant="solo"
+        ></v-text-field>
+        <v-data-table
+          :headers="headers"
+          :items="desserts"
+          :search="search"
+        >
+          <template v-slot:item.actions="{ item }">
+            <v-icon
+              class="me-2"
+              size="large"
+              @click="editNote(item)"
+            >
+              mdi-pencil
+            </v-icon>
+            <v-icon
+              size="large"
+              @click="deleteNote(item)"
+            >
+              mdi-delete
+            </v-icon>
+          </template>
+        </v-data-table>
+      </div>
     </div>
   </div>
 </template>
@@ -33,6 +52,11 @@ const headers = reactive([
     key: 'content',
     title: 'Content'
   },
+  {
+    key: 'actions',
+    title: 'Actions',
+    sortable: false
+  },
 ])
 
 const desserts = reactive([
@@ -50,13 +74,30 @@ const desserts = reactive([
   },
 ])
 
+const editNote = (item) => {
+  item.content += '1'
+}
+
+const deleteNote = (item) => {
+  let index = desserts.indexOf(item)
+  desserts.splice(index, 1)
+}
+
 </script>
 
 <style lang="scss" scoped>
 .notes {
-  margin-top: 5rem;
-  min-height: calc( 100vh - 10rem );
-  background-color: var(--background-color);
+  // margin-top: 5rem;
+  // min-height: calc( 100vh - 10rem );
+  // display: flex;
+  // justify-content: center;
+}
+
+.notes-content {
+  width: 80%;
+  // margin-top: 2rem;
+  // display: grid;
+  // place-items: center;
 }
 
 @media (max-width: $tablet-breakpoint) {

@@ -4,9 +4,8 @@
 
     <div class="menus">
       <div class="menu-button" @click="replaceRouter('/')">Home</div>
-      <div class="menu-button" @click="replaceRouter('/users')">
-        Users
-      </div>
+      <div class="menu-button" @click="replaceRouter('/users')">Users</div>
+      <div class="menu-button" @click="replaceRouter('/sites')">Sites</div>
       <div class="menu-button" @click="replaceRouter('/notes')">Notes</div>
       <div class="menu-button" @click="changeTheme">theme</div>
     </div>
@@ -82,6 +81,7 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  z-index: 999;
 }
 
 .main-button {
