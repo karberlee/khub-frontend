@@ -137,7 +137,9 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, nextTick } from "vue"
+import { ref, reactive, computed, nextTick, onMounted, getCurrentInstance } from "vue"
+
+const { appContext } = getCurrentInstance()
 
 const search = ref("")
 
@@ -399,6 +401,15 @@ const deleteConfirm = () => {
   desserts.splice(deleteIndex.value, 1)
   deleteIndex.value = -1
   deleteDialog.value = false
+}
+
+onMounted(() => {
+  init()
+})
+
+const init = async () => {
+  const res = await appContext.config.globalProperties.$get("/site")
+  desserts = res.data
 }
 
 </script>

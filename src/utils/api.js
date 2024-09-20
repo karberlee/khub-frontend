@@ -2,7 +2,8 @@
 import axios from "axios"
 
 const http = axios.create({
-  baseURL: 'https://api.example.com', // API Base URL
+  // baseURL: 'https://api.example.com', // API Base URL
+  baseURL: import.meta.env.VITE_API_URL, // API Base URL
   timeout: 10000, // 请求超时时间
   headers: {
     'Content-Type': 'application/json',
