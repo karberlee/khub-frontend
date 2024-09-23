@@ -81,12 +81,11 @@ export const post = (url, body) => {
   })
 }
 
-export const patch = (url, params, body) => {
+export const patch = (url, body) => {
   return new Promise((resolve, reject) => {
     http({
       method: "patch",
       url: url,
-      params: params,
       data: body,
       headers: {
         "Content-Type": "application/json"
