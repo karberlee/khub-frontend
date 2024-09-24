@@ -14,6 +14,6 @@ app.use(vuetify)
 app.config.globalProperties.$get = get
 app.config.globalProperties.$post = post
 app.config.globalProperties.$patch = patch
-app.config.globalProperties.$del = del
+app.config.globalProperties.$delete = del
 
 app.mount('#app')
