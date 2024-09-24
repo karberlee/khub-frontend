@@ -44,11 +44,10 @@ http.interceptors.response.use(
 
 
 
-export const get = (url, params) => {
+export const get = (url) => {
   return new Promise((resolve, reject) => {
     http({
       method: "get",
-      params: params,
       url: url
     })
     .then(res => {
@@ -101,12 +100,11 @@ export const patch = (url, body) => {
   })
 }
 
-export const del = (url, params) => {
+export const del = (url) => {
   return new Promise((resolve, reject) => {
     http({
       method: "delete",
       url: url,
-      params: params
     })
     .then(res => {
       resolve(res);
