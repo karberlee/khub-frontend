@@ -33,6 +33,10 @@ const router = createRouter({
       name: 'sites',
       component: () => import('@/views/Sites.vue')
     },
+    {
+      path: "/:catchAll(.*)", // vue3区别于vue2的写法，vue2中直接/*
+      redirect: "/"
+    }
   ]
 })
 

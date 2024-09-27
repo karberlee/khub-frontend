@@ -15,7 +15,7 @@ http.interceptors.request.use(
   function (config) {
     const token = localStorage.getItem("token")
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`
+      config.headers.Authorization = token
     }
     return config
   },
@@ -34,7 +34,7 @@ http.interceptors.response.use(
   function (error) {
     console.log("api response error:", error)
     const { status } = error.response
-    if(status === 401 && !window.location.href.endsWith("/login")) {
+    if([401, 403].indexOf(status) > -1 && !window.location.href.endsWith("/login")) {
       localStorage.removeItem("token")
       window.location.href = "/login"
     }

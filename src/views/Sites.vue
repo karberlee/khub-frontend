@@ -399,13 +399,12 @@ const editSite = (item) => {
 const save = async () => {
   if (currentIndex.value === -1) {
     await $post("/site", data.currentSiteItem)
-    await init()
   } else {
     delete data.currentSiteItem._id
     delete data.currentSiteItem.__v
     await $patch(`/site/${currentIndex.value}`, data.currentSiteItem)
-    await init()
   }
+  await init()
   close()
 }
 
@@ -438,7 +437,11 @@ onMounted(() => {
 
 const init = async () => {
   const res = await $get("/site")
-  data.siteList = res.data
+  if (res.data.code === 0) {
+    data.siteList = res.data.body
+  } else {
+    alert("error")
+  }
 }
 
 </script>
