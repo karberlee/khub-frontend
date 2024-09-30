@@ -24,6 +24,12 @@
             </template>
             <div>{{ item.title }}</div>
           </v-list-item>
+          <v-list-item @click="logout">
+            <template v-slot:prepend>
+              <v-icon icon="mdi-logout"></v-icon>
+            </template>
+            <div>Logout</div>
+          </v-list-item>
         </v-list>
       </v-menu>
     </div>
@@ -51,7 +57,6 @@ const user = computed(() => {
 const avatarMenus = reactive([
   { icon: "mdi-pencil", title: "Edit" },
   { icon: "mdi-cog", title: "Setting" },
-  { icon: "mdi-logout", title: "Logout" },
 ])
 
 // Navigate to Home page
@@ -62,6 +67,13 @@ const replaceRouter = function (path) {
 // change theme
 const changeTheme = function () {
   theme.value = theme.value === "default" ? "dark" : "default"
+}
+
+// logout
+const logout = function () {
+  localStorage.removeItem("token")
+  localStorage.removeItem("userId")
+  window.location.reload()
 }
 
 watch(theme, (newTheme) => {
