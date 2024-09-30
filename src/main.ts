@@ -18,4 +18,6 @@ app.config.globalProperties.$post = post
 app.config.globalProperties.$patch = patch
 app.config.globalProperties.$delete = del
 
+store.dispatch('loadUserFromStorage')
+
 app.mount('#app')

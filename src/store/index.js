@@ -13,7 +13,14 @@ const mutations = {
   },
 }
 
-const actions = {}
+const actions = {
+  loadUserFromStorage({ commit }) {
+    const user = localStorage.getItem('user')
+    if (user) {
+      commit('setUser', JSON.parse(user))
+    }
+  },
+}
 
 const getters = {}
 
