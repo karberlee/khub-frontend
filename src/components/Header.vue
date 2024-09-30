@@ -31,10 +31,12 @@
 </template>
 
 <script setup>
-import { ref, reactive, watch, computed } from "vue"
+import { ref, reactive, watch, computed, onMounted, getCurrentInstance } from "vue"
 import { useStore } from "vuex"
 import { useRouter } from "vue-router"
 import Avatar from "@/components/Avater.vue"
+const { appContext } = getCurrentInstance()
+const { $get } = appContext.config.globalProperties
 
 const store = useStore()
 
@@ -69,6 +71,16 @@ watch(theme, (newTheme) => {
 
 // Initialize theme
 document.documentElement.setAttribute("data-theme", theme.value)
+
+onMounted(() => {
+  getUserInfo()
+})
+
+const getUserInfo = async () => {
+  const userId = localStorage.getItem('userId')
+  const res = await $get(`/user/${userId}`)
+  store.commit('setUser', res.data.body)
+}
 </script>
 
 <style lang="scss" scoped>

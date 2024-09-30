@@ -29,8 +29,7 @@ export default {
       async login() {
         const res = await this.$post("/auth/login", userInfo)
         if (res.data.code === 0) {
-          store.commit("setUser", res.data.body)
-          localStorage.setItem('user', JSON.stringify(res.data.body)) // 存储用户信息
+          localStorage.setItem('userId', res.data.body._id) // 存储用户ID
           this.$router.push("/")
         } else {
           this.$router.push("/login")
