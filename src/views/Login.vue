@@ -13,10 +13,13 @@
 
 <script>
 import { ref, reactive, computed } from "vue"
+import { useStore } from "vuex"
 
 export default {
   name: "Login",
   setup() {
+    const store = useStore()
+
     const userInfo = reactive({
       account: "",
       password: "",
@@ -26,6 +29,7 @@ export default {
       async login() {
         const res = await this.$post("/auth/login", userInfo)
         if (res.data.code === 0) {
+          store.commit("setUser", res.data.body)
           this.$router.push("/")
         } else {
           this.$router.push("/login")

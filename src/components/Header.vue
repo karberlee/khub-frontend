@@ -13,8 +13,8 @@
     <div class="avatar">
       <v-menu open-on-hover>
         <template v-slot:activator="{ props }">
-          <Avatar v-bind="props" :image="userInfo.avatar" :name="userInfo.nickname" size="3rem"
-            :altText="userInfo.nickname + ' Avatar'" />
+          <Avatar v-bind="props" :image="user.avatar" :name="user.name" size="3rem"
+            :altText="user.name + ' Avatar'" />
         </template>
 
         <v-list>
@@ -31,18 +31,19 @@
 </template>
 
 <script setup>
-import { ref, reactive, watch } from "vue"
+import { ref, reactive, watch, computed } from "vue"
+import { useStore } from "vuex"
 import { useRouter } from "vue-router"
 import Avatar from "@/components/Avater.vue"
+
+const store = useStore()
 
 const router = useRouter()
 
 const theme = ref(localStorage.getItem("theme") || "default")
 
-const userInfo = reactive({
-  nickname: "Hello World",
-  // avatar: "src/assets/images/vue.ico",
-  email: "email@example.com",
+const user = computed(() => {
+  return store.state.user
 })
 
 const avatarMenus = reactive([
