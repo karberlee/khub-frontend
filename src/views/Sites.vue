@@ -39,19 +39,11 @@
           <div class="row-field">{{ item.description }}</div>
         </template>
         <template v-slot:item.actions="{ item }">
-          <v-icon
-            class="me-2"
-            size="large"
-            @click="editSite(item)"
-          >
-            mdi-pencil
-          </v-icon>
-          <v-icon
-            size="large"
-            @click="deleteSite(item)"
-          >
-            mdi-delete
-          </v-icon>
+          <div class="row-option">
+            <v-btn density="comfortable" icon="mdi-open-in-new" @click="openTab(item.siteLink)"></v-btn>
+            <v-btn density="comfortable" icon="mdi-pencil" @click="editSite(item)"></v-btn>
+            <v-btn density="comfortable" icon="mdi-delete" @click="deleteSite(item)"></v-btn>
+          </div>
         </template>
       </v-data-table>
       
@@ -387,6 +379,10 @@ const formTitle = computed(() => {
   return currentIndex.value === -1 ? 'New Site' : 'Edit Site'
 })
 
+const openTab = (link) => {
+  window.open(link)
+}
+
 const addSite = () => {
   data.currentSiteItem = {}
   editDialog.value = true
@@ -495,6 +491,12 @@ const init = async () => {
   overflow: hidden; /* 隐藏超出部分 */
   white-space: nowrap; /* 不换行 */
   text-overflow: ellipsis; /* 显示省略号 */
+}
+
+.row-option {
+  display: flex;
+  justify-content: flex-start;
+  gap: 1rem;
 }
 
 @media (max-width: $tablet-breakpoint) {
