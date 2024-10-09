@@ -400,7 +400,6 @@ const editSite = (item) => {
 
 const save = async () => {
   if (currentIndex.value === -1) {
-    data.currentSiteItem.userId = store.state.user._id 
     await $post("/site", data.currentSiteItem)
   } else {
     delete data.currentSiteItem._id
