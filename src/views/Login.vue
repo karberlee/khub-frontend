@@ -12,13 +12,15 @@
 </template>
 
 <script>
-import { ref, reactive, computed } from "vue"
+import { ref, reactive, computed, onMounted } from "vue"
 import { useStore } from "vuex"
+import { useRouter } from "vue-router"
 
 export default {
   name: "Login",
   setup() {
     const store = useStore()
+    const router = useRouter()
 
     const userInfo = reactive({
       account: "",
@@ -30,18 +32,25 @@ export default {
         const res = await this.$post("/auth/login", userInfo)
         if (res.data.code === 0) {
           localStorage.setItem('userId', res.data.body._id) // 存储用户ID
-          this.$router.push("/")
+          router.push("/")
         } else {
-          this.$router.push("/login")
+          router.push("/login")
         }
       },
     }
+    
+    onMounted(() => {
+      const token = localStorage.getItem('token')
+      if (token) {
+        router.replace("/")
+      }
+    })
 
     return {
       userInfo,
       ...methods
     }
-  }
+  },
 }
 </script>
 
