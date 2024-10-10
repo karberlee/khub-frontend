@@ -72,7 +72,6 @@ const avatarMenus = reactive([
 const replaceRouter = function (path) {
   currentRouter.value = path
   router.push(path)
-  console.log("aaa:", currentRouter.value === path)
 }
 
 // change theme
