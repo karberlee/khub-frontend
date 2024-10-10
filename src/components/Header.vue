@@ -9,7 +9,6 @@
       <div class="menu-button" :class="{ active: currentRouter === '/users' }" @click="replaceRouter('/users')">Users</div>
       <div class="menu-button" :class="{ active: currentRouter === '/sites' }" @click="replaceRouter('/sites')">Sites</div>
       <div class="menu-button" :class="{ active: currentRouter === '/notes' }" @click="replaceRouter('/notes')">Notes</div>
-      <div class="menu-button" @click="changeTheme">theme</div>
     </div>
 
     <div class="avatar">
@@ -25,6 +24,12 @@
               <v-icon :icon="item.icon"></v-icon>
             </template>
             <div>{{ item.title }}</div>
+          </v-list-item>
+          <v-list-item @click="changeTheme">
+            <template v-slot:prepend>
+              <v-icon icon="mdi-theme-light-dark"></v-icon>
+            </template>
+            <div>Theme</div>
           </v-list-item>
           <v-list-item @click="logout">
             <template v-slot:prepend>

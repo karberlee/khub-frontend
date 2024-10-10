@@ -21,6 +21,7 @@
       <v-data-table
         :headers="headers"
         :items="data.siteList"
+        :loading="loading"
         :search="search"
       >
         <template v-slot:item.siteName="{ item }">
@@ -165,6 +166,7 @@ const data = reactive({
   currentSiteItem: {}
 })
 
+const loading = ref(false)
 const search = ref("")
 
 const headers = reactive([
@@ -280,12 +282,14 @@ onMounted(() => {
 
 // component init, get all site
 const init = async () => {
+  loading.value = true
   const res = await $get("/site")
   if (res.data.code === 0) {
     data.siteList = res.data.body
   } else {
     alert("error")
   }
+  loading.value = false
 }
 
 </script>
