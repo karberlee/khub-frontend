@@ -23,6 +23,7 @@
         :items="data.siteList"
         :loading="loading"
         :search="search"
+        :items-per-page="25"
       >
         <template v-slot:item.siteName="{ item }">
           <div class="row-field">{{ item.siteName }}</div>
