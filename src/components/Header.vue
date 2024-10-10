@@ -1,6 +1,8 @@
 <template>
   <header>
-    <div class="main-button">Header</div>
+    <div class="main-button">
+      <img class="main-icon" src="@/assets/images/hatch.png" @click="replaceRouter('/')" alt="">
+    </div>
 
     <div class="menus">
       <div class="menu-button" :class="{ active: currentRouter === '/' }" @click="replaceRouter('/')">Home</div>
@@ -125,7 +127,17 @@ header {
   display: grid;
   place-items: center;
   color: var(--text-color);
-  cursor: pointer;
+  
+  .main-icon {
+    height: 4rem;          /* 最大高度 100% */
+    transition: transform 0.3s; /* 过渡效果 */
+    cursor: pointer;
+    // object-fit: contain;
+  }
+
+  .main-icon:hover {
+    transform: scale(1.05);    /* 悬停时放大效果 */
+  }
 }
 
 .menus {
