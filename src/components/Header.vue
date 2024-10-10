@@ -3,10 +3,10 @@
     <div class="main-button">Header</div>
 
     <div class="menus">
-      <div class="menu-button" @click="replaceRouter('/')">Home</div>
-      <div class="menu-button" @click="replaceRouter('/users')">Users</div>
-      <div class="menu-button" @click="replaceRouter('/sites')">Sites</div>
-      <div class="menu-button" @click="replaceRouter('/notes')">Notes</div>
+      <div class="menu-button" :class="{ active: currentRouter === '/' }" @click="replaceRouter('/')">Home</div>
+      <div class="menu-button" :class="{ active: currentRouter === '/users' }" @click="replaceRouter('/users')">Users</div>
+      <div class="menu-button" :class="{ active: currentRouter === '/sites' }" @click="replaceRouter('/sites')">Sites</div>
+      <div class="menu-button" :class="{ active: currentRouter === '/notes' }" @click="replaceRouter('/notes')">Notes</div>
       <div class="menu-button" @click="changeTheme">theme</div>
     </div>
 
@@ -54,6 +54,8 @@ const user = computed(() => {
   return store.state.user
 })
 
+const currentRouter = ref("/")
+
 const avatarMenus = reactive([
   { icon: "mdi-pencil", title: "Edit" },
   { icon: "mdi-cog", title: "Setting" },
@@ -61,7 +63,9 @@ const avatarMenus = reactive([
 
 // Navigate to Home page
 const replaceRouter = function (path) {
+  currentRouter.value = path
   router.push(path)
+  console.log("aaa:", currentRouter.value === path)
 }
 
 // change theme
@@ -139,6 +143,10 @@ header {
   }
 
   .menu-button:hover {
+    background-color: var(--secondary-color);
+  }
+
+  .menu-button.active {
     background-color: var(--secondary-color);
   }
 }

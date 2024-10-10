@@ -32,9 +32,9 @@
         <template v-slot:item.account="{ item }">
           <div class="row-field">{{ item.account }}</div>
         </template>
-        <template v-slot:item.password="{ item }">
+        <!-- <template v-slot:item.password="{ item }">
           <div class="row-field">{{ item.password }}</div>
-        </template>
+        </template> -->
         <template v-slot:item.description="{ item }">
           <div class="row-field">{{ item.description }}</div>
         </template>
@@ -101,6 +101,9 @@
                     variant="outlined"
                     v-model="data.currentSiteItem.password"
                     label="Password"
+                    :type="showPwd ? 'text' : 'password'"
+                    :append-inner-icon="showPwd ? 'mdi-eye' : 'mdi-eye-off'"
+                    @click:append-inner="showPwd = !showPwd"
                   ></v-text-field>
                 </v-col>
                 <v-col>
@@ -158,177 +161,7 @@ const { appContext } = getCurrentInstance()
 const { $get, $post, $patch, $delete } = appContext.config.globalProperties
 
 const data = reactive({
-  siteList: [
-    {
-
-      siteName: "KHub1",
-      siteLink: "http://khub.karber.top",
-      account: "aaa@example.com",
-      password: "ksahdnjakjdas",
-      description: "This is a test site."
-    },
-    {
-      siteName: "KHub Backend2",
-      siteLink: "http://khub-backend.karber.top",
-      account: "bbb@example.com",
-      password: "xzmckajkdvff",
-      description: "This is a test site backend."
-    },
-    {
-      siteName: "KHub Api Docs3",
-      siteLink: "http://khub.karber.top/apidocs",
-      account: "ccc@example.com",
-      password: "ujdvfsbdjavkv",
-      description: "This is a test site api docs."
-    },
-    {
-      siteName: "KHub Mongo Check4",
-      siteLink: "http://mongo.karber.top",
-      account: "ddd@example.com",
-      password: "asdfjkakjsdva",
-      description: "This is a test site db status check."
-    },
-    {
-      siteName: "KHub5",
-      siteLink: "http://khub.karber.top",
-      account: "aaa@example.com",
-      password: "ksahdnjakjdas",
-      description: "This is a test site."
-    },
-    {
-      siteName: "KHub Backend6",
-      siteLink: "http://khub-backend.karber.top",
-      account: "bbb@example.com",
-      password: "xzmckajkdvff",
-      description: "This is a test site backend."
-    },
-    {
-      siteName: "KHub Api Docs7",
-      siteLink: "http://khub.karber.top/apidocs",
-      account: "ccc@example.com",
-      password: "ujdvfsbdjavkv",
-      description: "This is a test site api docs."
-    },
-    {
-      siteName: "KHub Mongo Check8",
-      siteLink: "http://mongo.karber.top",
-      account: "ddd@example.com",
-      password: "asdfjkakjsdva",
-      description: "This is a test site db status check."
-    },
-    {
-      siteName: "KHub9",
-      siteLink: "http://khub.karber.top",
-      account: "aaa@example.com",
-      password: "ksahdnjakjdas",
-      description: "This is a test site."
-    },
-    {
-      siteName: "KHub Backend10",
-      siteLink: "http://khub-backend.karber.top",
-      account: "bbb@example.com",
-      password: "xzmckajkdvff",
-      description: "This is a test site backend."
-    },
-    {
-      siteName: "KHub Api Docs11",
-      siteLink: "http://khub.karber.top/apidocs",
-      account: "ccc@example.com",
-      password: "ujdvfsbdjavkv",
-      description: "This is a test site api docs."
-    },
-    {
-      siteName: "KHub Mongo Check12",
-      siteLink: "http://mongo.karber.top",
-      account: "ddd@example.com",
-      password: "asdfjkakjsdva",
-      description: "This is a test site db status check."
-    },
-    {
-      siteName: "KHub13",
-      siteLink: "http://khub.karber.top",
-      account: "aaa@example.com",
-      password: "ksahdnjakjdas",
-      description: "This is a test site."
-    },
-    {
-      siteName: "KHub Backend14",
-      siteLink: "http://khub-backend.karber.top",
-      account: "bbb@example.com",
-      password: "xzmckajkdvff",
-      description: "This is a test site backend."
-    },
-    {
-      siteName: "KHub Api Docs15",
-      siteLink: "http://khub.karber.top/apidocs",
-      account: "ccc@example.com",
-      password: "ujdvfsbdjavkv",
-      description: "This is a test site api docs."
-    },
-    {
-      siteName: "KHub Mongo Check16",
-      siteLink: "http://mongo.karber.top",
-      account: "ddd@example.com",
-      password: "asdfjkakjsdva",
-      description: "This is a test site db status check."
-    },
-    {
-      siteName: "KHub17",
-      siteLink: "http://khub.karber.top",
-      account: "aaa@example.com",
-      password: "ksahdnjakjdas",
-      description: "This is a test site."
-    },
-    {
-      siteName: "KHub Backend18",
-      siteLink: "http://khub-backend.karber.top",
-      account: "bbb@example.com",
-      password: "xzmckajkdvff",
-      description: "This is a test site backend."
-    },
-    {
-      siteName: "KHub Api Docs19",
-      siteLink: "http://khub.karber.top/apidocs",
-      account: "ccc@example.com",
-      password: "ujdvfsbdjavkv",
-      description: "This is a test site api docs."
-    },
-    {
-      siteName: "KHub Mongo Check20",
-      siteLink: "http://mongo.karber.top",
-      account: "ddd@example.com",
-      password: "asdfjkakjsdva",
-      description: "This is a test site db status check."
-    },
-    {
-      siteName: "KHub21",
-      siteLink: "http://khub.karber.top",
-      account: "aaa@example.com",
-      password: "ksahdnjakjdas",
-      description: "This is a test site."
-    },
-    {
-      siteName: "KHub Backend22",
-      siteLink: "http://khub-backend.karber.top",
-      account: "bbb@example.com",
-      password: "xzmckajkdvff",
-      description: "This is a test site backend."
-    },
-    {
-      siteName: "KHub Api Docs23",
-      siteLink: "http://khub.karber.top/apidocs",
-      account: "ccc@example.com",
-      password: "ujdvfsbdjavkv",
-      description: "This is a test site api docs."
-    },
-    {
-      siteName: "KHub Mongo Check24",
-      siteLink: "http://mongo.karber.top",
-      account: "ddd@example.com",
-      password: "asdfjkakjsdva",
-      description: "This is a test site db status check."
-    },
-  ],
+  siteList: [],
   currentSiteItem: {}
 })
 
@@ -351,12 +184,12 @@ const headers = reactive([
     title: 'Account',
     width: '15%',
   },
-  {
-    key: 'password',
-    sortable: false,
-    title: 'Password',
-    width: '15%',
-  },
+  // {
+  //   key: 'password',
+  //   sortable: false,
+  //   title: 'Password',
+  //   width: '15%',
+  // },
   {
     key: 'description',
     title: 'Description',
@@ -371,6 +204,7 @@ const headers = reactive([
 ])
 
 const editDialog = ref(false)
+const showPwd = ref(false)
 const deleteDialog = ref(false)
 const currentIndex = ref(-1)
 const deleteIndex = ref(-1)
@@ -379,21 +213,27 @@ const formTitle = computed(() => {
   return currentIndex.value === -1 ? 'New Site' : 'Edit Site'
 })
 
+// link to website in new tab
 const openTab = (link) => {
   window.open(link)
 }
 
+// open insert dialog
 const addSite = () => {
   data.currentSiteItem = {}
+  showPwd.value = false
   editDialog.value = true
 }
 
+// open edit dialog
 const editSite = (item) => {
+  showPwd.value = false
   editDialog.value = true
   currentIndex.value = item._id
   Object.assign(data.currentSiteItem, item)
 }
 
+// save site, insert or edit
 const save = async () => {
   if (currentIndex.value === -1) {
     await $post("/site", data.currentSiteItem)
@@ -406,23 +246,28 @@ const save = async () => {
   close()
 }
 
+// close insert or edit dialog
 const close = async () => {
   await nextTick()
   data.currentSiteItem = {}
   currentIndex.value = -1
+  showPwd.value = false
   editDialog.value = false
 }
 
+// open delete comfirm dialog
 const deleteSite = (item) => {
   deleteIndex.value = item._id
   deleteDialog.value = true
 }
 
+// cancel delete
 const deleteCancel = () => {
   deleteIndex.value = -1
   deleteDialog.value = false
 }
 
+// confirm delete
 const deleteConfirm = async () => {
   await $delete(`/site/${deleteIndex.value}`)
   await init()
@@ -433,6 +278,7 @@ onMounted(() => {
   init()
 })
 
+// component init, get all site
 const init = async () => {
   const res = await $get("/site")
   if (res.data.code === 0) {
