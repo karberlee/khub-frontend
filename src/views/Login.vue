@@ -2,10 +2,29 @@
   <div class="login_page">
     <div class="login_area">
       <div class="title">Login</div>
-      <div class="sub_title">Account:</div>
-      <input class="form_input" type="text" placeholder="Account" v-model="userInfo.account"/><br>
-      <div class="sub_title">Password:</div>
-      <input class="form_input" type="password" placeholder="Password" v-model="userInfo.password"/><br>
+      <!-- <div class="sub_title">Account:</div> -->
+      <!-- <input class="form_input" type="text" placeholder="Account" v-model="userInfo.account"/><br> -->
+      <v-col>
+        <v-text-field
+          width="25rem"
+          variant="underlined"
+          v-model="userInfo.account"
+          label="Account"
+        ></v-text-field>
+      </v-col>
+      <!-- <div class="sub_title">Password:</div> -->
+      <!-- <input class="form_input" type="password" placeholder="Password" v-model="userInfo.password"/><br> -->
+      <v-col>
+        <v-text-field
+          width="25rem"
+          variant="underlined"
+          v-model="userInfo.password"
+          label="Password"
+          :type="showPwd ? 'text' : 'password'"
+          :append-inner-icon="showPwd ? 'mdi-eye' : 'mdi-eye-off'"
+          @click:append-inner="showPwd = !showPwd"
+        ></v-text-field>
+      </v-col>
       <div class="button" @click="login">Login</div>
     </div>
   </div>
@@ -22,6 +41,7 @@ export default {
     const store = useStore()
     const router = useRouter()
 
+    const showPwd = ref(false)
     const userInfo = reactive({
       account: "",
       password: "",
@@ -47,6 +67,7 @@ export default {
     })
 
     return {
+      showPwd,
       userInfo,
       ...methods
     }
@@ -64,7 +85,7 @@ export default {
   .login_area {
     width: fit-content;
     height: fit-content;
-    padding: 20px 80px;
+    padding: 2rem 4rem;
     outline: 2px solid #888888;
     outline-offset: -4px;
     border-radius: 20px;
@@ -101,21 +122,21 @@ export default {
     }
 
     .button {
-      width: 100px;
-      height: 40px;
+      width: 8rem;
+      height: 3rem;
       text-align: center;
-      line-height: 40px;
-      font-size: 20px;
+      line-height: 3rem;
+      font-size: 1.25rem;
       font-weight: 500;
       border-radius: 20px;
-      margin: 30px auto 10px;
+      margin: 1rem auto;
       box-shadow: 10px 4px 10px rgba(0, 0, 0, 0.2),
                   -10px -4px 10px rgba(255, 255, 255, 1);
-      transition: all 0.3s ease-out;
+      transition: all 0.2s ease-out;
 
       &:hover {
         cursor: pointer;
-        font-size: 19px;
+        font-size: 1.3rem;
         box-shadow: 0 0 0 rgba(0, 0, 0, 0.2),
                     0 0 0 rgba(255, 255, 255, 1),
                     inset 10px 4px 10px rgba(0, 0, 0, 0.1),
