@@ -29,7 +29,10 @@
           <div class="row-field">{{ item.siteName }}</div>
         </template>
         <template v-slot:item.siteLink="{ item }">
-          <div class="row-field">{{ item.siteLink }}</div>
+          <div class="link-col" @click="openTab(item.siteLink)">
+            <v-icon density="comfortable" icon="mdi-open-in-new"></v-icon>
+            <div class="row-field">{{ item.siteLink }}</div>
+          </div>
         </template>
         <template v-slot:item.account="{ item }">
           <div class="row-field">{{ item.account }}</div>
@@ -335,6 +338,17 @@ const init = async () => {
 
 .v-data-table :deep(.v-table__wrapper) {
   overflow: unset;
+}
+
+.link-col {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  
+  &:hover {
+    color: blue;
+  }
 }
 
 .row-field {
