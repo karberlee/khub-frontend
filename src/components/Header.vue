@@ -1,7 +1,7 @@
 <template>
   <header>
     <div class="main-button">
-      <img class="main-icon" src="@/assets/images/hatch.png" @click="replaceRouter('/')" alt="">
+      <img class="main-icon" src="@/assets/images/panda.png" @click="replaceRouter('/')" alt="">
     </div>
 
     <div class="menus">
