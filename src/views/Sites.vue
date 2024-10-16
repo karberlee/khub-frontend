@@ -56,7 +56,7 @@
         v-model="editDialog"
         max-width="50rem"
       >
-        <v-card>
+        <v-card :loading="addLoading">
           <v-card-title>
             <span class="text-h5">{{ formTitle }}</span>
           </v-card-title>
@@ -132,6 +132,7 @@
               Cancel
             </v-btn>
             <v-btn
+              :loading="addLoading"
               color="blue-darken-1"
               variant="elevated"
               @click="save"
@@ -143,12 +144,12 @@
       </v-dialog>
 
       <v-dialog v-model="deleteDialog" max-width="50rem">
-        <v-card>
+        <v-card :loading="deleteLoading">
           <v-card-title class="text-h5">Are you sure you want to delete this item?</v-card-title>
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="blue-darken-1" variant="elevated" @click="deleteCancel">Cancel</v-btn>
-            <v-btn color="blue-darken-1" variant="elevated" @click="deleteConfirm">OK</v-btn>
+            <v-btn color="blue-darken-1" variant="elevated" :loading="deleteLoading" @click="deleteConfirm">OK</v-btn>
             <v-spacer></v-spacer>
           </v-card-actions>
         </v-card>
@@ -214,6 +215,8 @@ const showPwd = ref(false)
 const deleteDialog = ref(false)
 const currentIndex = ref(-1)
 const deleteIndex = ref(-1)
+const addLoading = ref(false)
+const deleteLoading = ref(false)
 
 const formTitle = computed(() => {
   return currentIndex.value === -1 ? 'New Site' : 'Edit Site'
@@ -241,6 +244,7 @@ const editSite = (item) => {
 
 // save site, insert or edit
 const save = async () => {
+  addLoading.value = true
   if (currentIndex.value === -1) {
     await $post("/site", data.currentSiteItem)
   } else {
@@ -248,8 +252,8 @@ const save = async () => {
     delete data.currentSiteItem.__v
     await $patch(`/site/${currentIndex.value}`, data.currentSiteItem)
   }
-  await init()
   close()
+  await init()
 }
 
 // close insert or edit dialog
@@ -259,6 +263,7 @@ const close = async () => {
   currentIndex.value = -1
   showPwd.value = false
   editDialog.value = false
+  addLoading.value = false
 }
 
 // open delete comfirm dialog
@@ -271,13 +276,15 @@ const deleteSite = (item) => {
 const deleteCancel = () => {
   deleteIndex.value = -1
   deleteDialog.value = false
+  deleteLoading.value = false
 }
 
 // confirm delete
 const deleteConfirm = async () => {
+  deleteLoading.value = true
   await $delete(`/site/${deleteIndex.value}`)
-  await init()
   deleteCancel()
+  await init()
 }
 
 onMounted(() => {

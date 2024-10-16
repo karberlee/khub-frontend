@@ -46,7 +46,7 @@
 <script setup>
 import { ref, reactive, watch, computed, onMounted, getCurrentInstance } from "vue"
 import { useStore } from "vuex"
-import { useRouter } from "vue-router"
+import { useRouter, useRoute } from "vue-router"
 import Avatar from "@/components/Avater.vue"
 const { appContext } = getCurrentInstance()
 const { $get } = appContext.config.globalProperties
@@ -54,6 +54,7 @@ const { $get } = appContext.config.globalProperties
 const store = useStore()
 
 const router = useRouter()
+const route = useRoute()
 
 const theme = ref(localStorage.getItem("theme") || "default")
 
@@ -61,7 +62,9 @@ const user = computed(() => {
   return store.state.user
 })
 
-const currentRouter = ref("/")
+const currentRouter = computed(() => {
+  return route.path
+})
 
 const avatarMenus = reactive([
   { icon: "mdi-pencil", title: "Edit" },
@@ -70,7 +73,6 @@ const avatarMenus = reactive([
 
 // Navigate to Home page
 const replaceRouter = function (path) {
-  currentRouter.value = path
   router.push(path)
 }
 
