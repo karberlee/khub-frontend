@@ -213,13 +213,13 @@ const headers = reactive([
 const editDialog = ref(false)
 const showPwd = ref(false)
 const deleteDialog = ref(false)
-const currentIndex = ref(-1)
+const currentSiteId = ref(-1)
 const deleteIndex = ref(-1)
 const addLoading = ref(false)
 const deleteLoading = ref(false)
 
 const formTitle = computed(() => {
-  return currentIndex.value === -1 ? 'New Site' : 'Edit Site'
+  return currentSiteId.value === -1 ? 'New Site' : 'Edit Site'
 })
 
 // link to website in new tab
@@ -238,19 +238,19 @@ const addSite = () => {
 const editSite = (item) => {
   showPwd.value = false
   editDialog.value = true
-  currentIndex.value = item._id
+  currentSiteId.value = item._id
   Object.assign(data.currentSiteItem, item)
 }
 
 // save site, insert or edit
 const save = async () => {
   addLoading.value = true
-  if (currentIndex.value === -1) {
+  if (currentSiteId.value === -1) {
     await $post("/site", data.currentSiteItem)
   } else {
     delete data.currentSiteItem._id
     delete data.currentSiteItem.__v
-    await $patch(`/site/${currentIndex.value}`, data.currentSiteItem)
+    await $patch(`/site/${currentSiteId.value}`, data.currentSiteItem)
   }
   close()
   await init()
@@ -260,7 +260,7 @@ const save = async () => {
 const close = async () => {
   await nextTick()
   data.currentSiteItem = {}
-  currentIndex.value = -1
+  currentSiteId.value = -1
   showPwd.value = false
   editDialog.value = false
   addLoading.value = false

@@ -2,6 +2,25 @@
   <div class="global-content notes">
     <div class="notes-content">
       <div class="global-title">Notes Page</div>
+
+      <div class="search-row">
+        <v-text-field
+          max-width="50%"
+          clearable
+          v-model="search"
+          label="Search"
+          prepend-inner-icon="mdi-magnify"
+          variant="outlined"
+        ></v-text-field>
+        <div class="btn-area">
+          <v-btn color="success" @click="searchNote">Search</v-btn>
+          <div class="btn-end-area">
+            <v-btn color="success" @click="addNote">New</v-btn>
+            <!-- <v-btn color="success">Delete</v-btn> -->
+          </div>
+        </div>
+      </div>
+
       <v-row>
         <v-col
           cols="12"
@@ -32,49 +51,87 @@
         </v-card>
         </v-col>
       </v-row>
-      <!-- <div class="">
-        <v-text-field
-          clearable
-          v-model="search"
-          label="Search"
-          prepend-inner-icon="mdi-magnify"
-          variant="solo"
-        ></v-text-field>
-        <v-data-table
-          :headers="headers"
-          :items="data.noteList"
-          :search="search"
-        >
-          <template v-slot:item.actions="{ item }">
-            <v-icon
-              class="me-2"
-              size="large"
-              @click="editNote(item)"
+
+      <v-dialog
+        v-model="editDialog"
+        max-width="50rem"
+      >
+        <v-card :loading="loading">
+          <v-card-title>
+            <span class="text-h5">{{ formTitle }}</span>
+          </v-card-title>
+
+          <v-card-text>
+            <v-container>
+              <v-row>
+                <v-col
+                  cols="12"
+                  md="6"
+                  sm="12"
+                >
+                  <v-text-field
+                    variant="outlined"
+                    v-model="data.currentNoteItem.title"
+                    label="Note Title"
+                  ></v-text-field>
+                </v-col>
+                <v-col
+                  cols="12"
+                  md="6"
+                  sm="12"
+                >
+                  <v-text-field
+                    variant="outlined"
+                    v-model="data.currentNoteItem.level"
+                    label="Note Level"
+                  ></v-text-field>
+                </v-col>
+                <v-col>
+                  <v-textarea
+                    variant="outlined"
+                    v-model="data.currentNoteItem.content"
+                    label="Content"
+                  ></v-textarea>
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-card-text>
+
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+              color="blue-darken-1"
+              variant="elevated"
+              @click="close"
             >
-              mdi-pencil
-            </v-icon>
-            <v-icon
-              size="large"
-              @click="deleteNote(item)"
+              Cancel
+            </v-btn>
+            <v-btn
+              :loading="addLoading"
+              color="blue-darken-1"
+              variant="elevated"
+              @click="save"
             >
-              mdi-delete
-            </v-icon>
-          </template>
-        </v-data-table>
-      </div> -->
+              Save
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, reactive, watch } from "vue"
+import { ref, reactive, computed, watch, nextTick, onMounted, getCurrentInstance } from "vue"
+const { appContext } = getCurrentInstance()
+const { $get, $post, $patch, $delete } = appContext.config.globalProperties
 
 const data = reactive({
   colorMapping: {
-    0: "success",
-    1: "info",
-    2: "warning",
-    3: "error"
+    1: "success",
+    2: "info",
+    3: "warning",
+    4: "error"
   },
   noteList: [
     {
@@ -118,33 +175,86 @@ const data = reactive({
       title: "bfgndfynj",
       content: `skcnjdfvndaknlfjvskcnjdfvndaknlfjvskcnjdfvndaknlfjv`
     },
+    {
+      _id: "sdffbvsdgvbf",
+      level: 4,
+      title: "bfsgbsfbngfsb",
+      content: `skdvzkjfjknklszvfkvg`
+    },
   ],
   currentNoteItem: {}
 })
 
 const search = ref("")
+const editDialog = ref(false)
+const loading = ref(false)
+const currentNoteId = ref(-1)
 
-const headers = reactive([
-  {
-    align: 'start',
-    key: 'title',
-    sortable: false,
-    title: 'Title',
-  },
-  {
-    key: 'content',
-    title: 'Content'
-  },
-  {
-    key: 'actions',
-    title: 'Actions',
-    sortable: false
-  },
-])
+const formTitle = computed(() => {
+  return currentNoteId.value === -1 ? 'New Note' : 'Edit Note'
+})
 
-const editNote = (item) => {
-  item.content += '1'
+// search note
+const searchNote = () => {
+  console.log("search note")
 }
+
+// open insert dialog
+const addNote = () => {
+  data.currentNoteItem = {}
+  editDialog.value = true
+}
+
+// open edit dialog
+const editNote = (item) => {
+  showPwd.value = false
+  editDialog.value = true
+  currentNoteId.value = item._id
+  Object.assign(data.currentNoteItem, item)
+}
+
+// save note, insert or edit
+const save = async () => {
+  loading.value = true
+  if (currentNoteId.value === -1) {
+    await $post("/note", data.currentNoteItem)
+  } else {
+    delete data.currentNoteItem._id
+    delete data.currentNoteItem.__v
+    await $patch(`/note/${currentNoteId.value}`, data.currentNoteItem)
+  }
+  close()
+  await init()
+}
+
+// close insert or edit dialog
+const close = async () => {
+  await nextTick()
+  data.currentNoteItem = {}
+  currentNoteId.value = -1
+  editDialog.value = false
+  loading.value = false
+}
+
+onMounted(() => {
+  init()
+})
+
+// component init, get all note
+const init = async () => {
+  // loading.value = true
+  const res = await $get("/note")
+  if (res.data.code === 0) {
+    data.noteList = res.data.body
+  } else {
+    alert("error")
+  }
+  // loading.value = false
+}
+
+// const editNote = (item) => {
+//   item.content += '1'
+// }
 
 const deleteNote = (item) => {
   let index = data.noteList.indexOf(item)
@@ -166,6 +276,36 @@ const deleteNote = (item) => {
   // margin-top: 2rem;
   // display: grid;
   // place-items: center;
+}
+
+.search-row {
+  margin: 1rem 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .v-text-field {
+    background-color: #ffffff;
+  }
+  
+  .v-text-field :deep(.v-input__details) {
+    display: none;
+  }
+
+  .btn-area {
+    display: flex;
+    justify-content: space-between;
+    flex-grow: 1;
+    margin-left: 1rem;
+  }
+
+  .btn-end-area {
+    display: grid;
+    grid-auto-flow: column;
+    place-items: center;
+    gap: 1rem;
+  }
 }
 
 .card-content {
