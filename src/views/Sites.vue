@@ -56,7 +56,7 @@
         v-model="editDialog"
         max-width="50rem"
       >
-        <v-card :loading="addLoading">
+        <v-card>
           <v-card-title>
             <span class="text-h5">{{ formTitle }}</span>
           </v-card-title>
@@ -126,13 +126,12 @@
             <v-spacer></v-spacer>
             <v-btn
               color="blue-darken-1"
-              variant="elevated"
+              variant="tonal"
               @click="close"
             >
               Cancel
             </v-btn>
             <v-btn
-              :loading="addLoading"
               color="blue-darken-1"
               variant="elevated"
               @click="save"
@@ -144,12 +143,12 @@
       </v-dialog>
 
       <v-dialog v-model="deleteDialog" max-width="50rem">
-        <v-card :loading="deleteLoading">
+        <v-card>
           <v-card-title class="text-h5">Are you sure you want to delete this item?</v-card-title>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue-darken-1" variant="elevated" @click="deleteCancel">Cancel</v-btn>
-            <v-btn color="blue-darken-1" variant="elevated" :loading="deleteLoading" @click="deleteConfirm">OK</v-btn>
+            <v-btn color="blue-darken-1" variant="tonal" @click="deleteCancel">Cancel</v-btn>
+            <v-btn color="error" variant="elevated" @click="deleteConfirm">OK</v-btn>
             <v-spacer></v-spacer>
           </v-card-actions>
         </v-card>
@@ -215,8 +214,6 @@ const showPwd = ref(false)
 const deleteDialog = ref(false)
 const currentSiteId = ref(-1)
 const deleteIndex = ref(-1)
-const addLoading = ref(false)
-const deleteLoading = ref(false)
 
 const formTitle = computed(() => {
   return currentSiteId.value === -1 ? 'New Site' : 'Edit Site'
@@ -244,7 +241,7 @@ const editSite = (item) => {
 
 // save site, insert or edit
 const save = async () => {
-  addLoading.value = true
+  store.commit('setGlobalLoading', true)
   if (currentSiteId.value === -1) {
     await $post("/site", data.currentSiteItem)
   } else {
@@ -263,7 +260,7 @@ const close = async () => {
   currentSiteId.value = -1
   showPwd.value = false
   editDialog.value = false
-  addLoading.value = false
+  store.commit('setGlobalLoading', false)
 }
 
 // open delete comfirm dialog
@@ -276,12 +273,12 @@ const deleteSite = (item) => {
 const deleteCancel = () => {
   deleteIndex.value = -1
   deleteDialog.value = false
-  deleteLoading.value = false
+  store.commit('setGlobalLoading', false)
 }
 
 // confirm delete
 const deleteConfirm = async () => {
-  deleteLoading.value = true
+  store.commit('setGlobalLoading', true)
   await $delete(`/site/${deleteIndex.value}`)
   deleteCancel()
   await init()
