@@ -116,6 +116,7 @@
               Save
             </v-btn>
             <v-btn
+              v-if="data.currentNoteItem._id"
               color="error"
               variant="elevated"
               @click="deleteNote"
@@ -169,12 +170,8 @@ const data = reactive({
 
 const search = ref("")
 const editDialog = ref(false)
-const currentNoteId = ref(-1)
 const deleteDialog = ref(false)
-
-const formTitle = computed(() => {
-  return currentNoteId.value === -1 ? 'New Note' : 'Edit Note'
-})
+const formTitle = ref("New Note")
 
 // search note
 const searchNote = () => {
@@ -186,25 +183,27 @@ const searchNote = () => {
 // open insert dialog
 const addNote = () => {
   data.currentNoteItem = { level: 0 }
+  formTitle.value = "New Note"
   editDialog.value = true
 }
 
 // open edit dialog
 const editNote = (item) => {
+  formTitle.value = "Edit Note"
   editDialog.value = true
-  currentNoteId.value = item._id
   Object.assign(data.currentNoteItem, item)
 }
 
 // save note, insert or edit
 const save = async () => {
   store.commit('setGlobalLoading', true)
-  if (currentNoteId.value === -1) {
-    await $post("/note", data.currentNoteItem)
-  } else {
+  if (data.currentNoteItem._id) {
+    const noteId = data.currentNoteItem._id
     delete data.currentNoteItem._id
     delete data.currentNoteItem.__v
-    await $patch(`/note/${currentNoteId.value}`, data.currentNoteItem)
+    await $patch(`/note/${noteId}`, data.currentNoteItem)
+  } else {
+    await $post("/note", data.currentNoteItem)
   }
   close()
   await init()
@@ -213,7 +212,6 @@ const save = async () => {
 // close insert or edit dialog
 const close = async () => {
   data.currentNoteItem = { level: 0 }
-  currentNoteId.value = -1
   editDialog.value = false
   store.commit('setGlobalLoading', false)
 }

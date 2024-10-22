@@ -212,12 +212,8 @@ const headers = reactive([
 const editDialog = ref(false)
 const showPwd = ref(false)
 const deleteDialog = ref(false)
-const currentSiteId = ref(-1)
 const deleteIndex = ref(-1)
-
-const formTitle = computed(() => {
-  return currentSiteId.value === -1 ? 'New Site' : 'Edit Site'
-})
+const formTitle = ref("")
 
 // link to website in new tab
 const openTab = (link) => {
@@ -227,27 +223,29 @@ const openTab = (link) => {
 // open insert dialog
 const addSite = () => {
   data.currentSiteItem = {}
+  formTitle.value = "New Site"
   showPwd.value = false
   editDialog.value = true
 }
 
 // open edit dialog
 const editSite = (item) => {
+  formTitle.value = "Edit Site"
   showPwd.value = false
   editDialog.value = true
-  currentSiteId.value = item._id
   Object.assign(data.currentSiteItem, item)
 }
 
 // save site, insert or edit
 const save = async () => {
   store.commit('setGlobalLoading', true)
-  if (currentSiteId.value === -1) {
-    await $post("/site", data.currentSiteItem)
-  } else {
+  if (data.currentSiteItem._id) {
+    const siteId = data.currentSiteItem._id
     delete data.currentSiteItem._id
     delete data.currentSiteItem.__v
-    await $patch(`/site/${currentSiteId.value}`, data.currentSiteItem)
+    await $patch(`/site/${siteId}`, data.currentSiteItem)
+  } else {
+    await $post("/site", data.currentSiteItem)
   }
   close()
   await init()
@@ -256,7 +254,6 @@ const save = async () => {
 // close insert or edit dialog
 const close = async () => {
   data.currentSiteItem = {}
-  currentSiteId.value = -1
   showPwd.value = false
   editDialog.value = false
   store.commit('setGlobalLoading', false)
