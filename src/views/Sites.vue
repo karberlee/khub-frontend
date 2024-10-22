@@ -159,7 +159,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, nextTick, onMounted, getCurrentInstance } from "vue"
+import { ref, reactive, computed, onMounted, getCurrentInstance } from "vue"
 import { useStore } from "vuex"
 const store = useStore()
 const { appContext } = getCurrentInstance()
@@ -255,7 +255,6 @@ const save = async () => {
 
 // close insert or edit dialog
 const close = async () => {
-  await nextTick()
   data.currentSiteItem = {}
   currentSiteId.value = -1
   showPwd.value = false

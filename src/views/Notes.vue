@@ -142,7 +142,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, watch, nextTick, onMounted, getCurrentInstance } from "vue"
+import { ref, reactive, computed, watch, onMounted, getCurrentInstance } from "vue"
 import { useStore } from "vuex"
 const { appContext } = getCurrentInstance()
 const { $get, $post, $patch, $delete } = appContext.config.globalProperties
@@ -212,7 +212,6 @@ const save = async () => {
 
 // close insert or edit dialog
 const close = async () => {
-  await nextTick()
   data.currentNoteItem = { level: 0 }
   currentNoteId.value = -1
   editDialog.value = false
