@@ -5,11 +5,15 @@ import { createStore } from 'vuex'
 
 const state = {
   user: {},
+  globalLoading: false,
 }
 
 const mutations = {
   setUser(state, value) {
     state.user = value
+  },
+  setGlobalLoading(state, value) {
+    state.globalLoading = value
   },
 }
 

@@ -22,6 +22,8 @@ import {
   VRow,
   VCol,
   VDialog,
+  VSelect,
+  VProgressCircular,
 } from 'vuetify/components'
 
 const vuetify = createVuetify({
@@ -46,6 +48,8 @@ const vuetify = createVuetify({
     VRow,
     VCol,
     VDialog,
+    VSelect,
+    VProgressCircular,
   },
 })
 

@@ -33,6 +33,7 @@
           hover
           :color="data.colorMapping[note.level]"
           height="20rem"
+          @click="editNote(note)"
         >
           <v-card-item>
             <!-- <template v-slot:prepend>
@@ -42,7 +43,7 @@
               <v-icon color="success" icon="mdi-check"></v-icon>
             </template> -->
             <v-card-title>{{ note.title || "No Title" }}</v-card-title>
-            <v-card-subtitle>{{ note.updateTime || "No Update Time" }}</v-card-subtitle>
+            <v-card-subtitle>{{ getLocalTime(note.updateTime) || "No Update Time" }}</v-card-subtitle>
           </v-card-item>
 
           <v-card-text>
@@ -56,7 +57,7 @@
         v-model="editDialog"
         max-width="50rem"
       >
-        <v-card :loading="loading">
+        <v-card>
           <v-card-title>
             <span class="text-h5">{{ formTitle }}</span>
           </v-card-title>
@@ -80,11 +81,12 @@
                   md="6"
                   sm="12"
                 >
-                  <v-text-field
-                    variant="outlined"
+                  <v-select
                     v-model="data.currentNoteItem.level"
                     label="Note Level"
-                  ></v-text-field>
+                    :items="data.levelSelect"
+                    variant="outlined"
+                  ></v-select>
                 </v-col>
                 <v-col>
                   <v-textarea
@@ -101,19 +103,37 @@
             <v-spacer></v-spacer>
             <v-btn
               color="blue-darken-1"
-              variant="elevated"
+              variant="tonal"
               @click="close"
             >
               Cancel
             </v-btn>
             <v-btn
-              :loading="addLoading"
               color="blue-darken-1"
               variant="elevated"
               @click="save"
             >
               Save
             </v-btn>
+            <v-btn
+              color="error"
+              variant="elevated"
+              @click="deleteNote"
+            >
+              Delete
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
+      <v-dialog v-model="deleteDialog" max-width="50rem">
+        <v-card>
+          <v-card-title class="text-h5">Are you sure you want to delete this item?</v-card-title>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue-darken-1" variant="tonal" @click="deleteCancel">Cancel</v-btn>
+            <v-btn color="error" variant="elevated" @click="deleteConfirm">OK</v-btn>
+            <v-spacer></v-spacer>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -123,8 +143,11 @@
 
 <script setup>
 import { ref, reactive, computed, watch, nextTick, onMounted, getCurrentInstance } from "vue"
+import { useStore } from "vuex"
 const { appContext } = getCurrentInstance()
 const { $get, $post, $patch, $delete } = appContext.config.globalProperties
+
+const store = useStore()
 
 const data = reactive({
   colorMapping: {
@@ -133,6 +156,13 @@ const data = reactive({
     3: "warning",
     4: "error"
   },
+  levelSelect: [
+    { title: "Default", value: 0 },
+    { title: "Normal", value: 1 },
+    { title: "Low", value: 2 },
+    { title: "Medium", value: 3 },
+    { title: "High", value: 4 },
+  ],
   noteList: [
     {
       _id: "dksjnvjdvsjfdlvkdsmkv",
@@ -182,13 +212,13 @@ const data = reactive({
       content: `skdvzkjfjknklszvfkvg`
     },
   ],
-  currentNoteItem: {}
+  currentNoteItem: { level: 0 }
 })
 
 const search = ref("")
 const editDialog = ref(false)
-const loading = ref(false)
 const currentNoteId = ref(-1)
+const deleteDialog = ref(false)
 
 const formTitle = computed(() => {
   return currentNoteId.value === -1 ? 'New Note' : 'Edit Note'
@@ -196,18 +226,18 @@ const formTitle = computed(() => {
 
 // search note
 const searchNote = () => {
-  console.log("search note")
+  store.commit('setGlobalLoading', true)
+  console.log("search note:", search.value)
 }
 
 // open insert dialog
 const addNote = () => {
-  data.currentNoteItem = {}
+  data.currentNoteItem = { level: 0 }
   editDialog.value = true
 }
 
 // open edit dialog
 const editNote = (item) => {
-  showPwd.value = false
   editDialog.value = true
   currentNoteId.value = item._id
   Object.assign(data.currentNoteItem, item)
@@ -215,7 +245,7 @@ const editNote = (item) => {
 
 // save note, insert or edit
 const save = async () => {
-  loading.value = true
+  store.commit('setGlobalLoading', true)
   if (currentNoteId.value === -1) {
     await $post("/note", data.currentNoteItem)
   } else {
@@ -230,10 +260,35 @@ const save = async () => {
 // close insert or edit dialog
 const close = async () => {
   await nextTick()
-  data.currentNoteItem = {}
+  data.currentNoteItem = { level: 0 }
   currentNoteId.value = -1
   editDialog.value = false
-  loading.value = false
+  store.commit('setGlobalLoading', false)
+}
+
+// open delete comfirm dialog
+const deleteNote = () => {
+  deleteDialog.value = true
+}
+
+// cancel delete
+const deleteCancel = () => {
+  deleteDialog.value = false
+}
+
+// confirm delete
+const deleteConfirm = async () => {
+  store.commit('setGlobalLoading', true)
+  await $delete(`/note/${data.currentNoteItem._id}`)
+  store.commit('setGlobalLoading', false)
+  deleteCancel()
+  close()
+  await init()
+}
+
+const getLocalTime = (utcTime) => {
+  const date = new Date(utcTime)
+  return date.toLocaleString()
 }
 
 onMounted(() => {
@@ -242,23 +297,14 @@ onMounted(() => {
 
 // component init, get all note
 const init = async () => {
-  // loading.value = true
+  store.commit('setGlobalLoading', true)
   const res = await $get("/note")
   if (res.data.code === 0) {
     data.noteList = res.data.body
   } else {
     alert("error")
   }
-  // loading.value = false
-}
-
-// const editNote = (item) => {
-//   item.content += '1'
-// }
-
-const deleteNote = (item) => {
-  let index = data.noteList.indexOf(item)
-  data.noteList.splice(index, 1)
+  store.commit('setGlobalLoading', false)
 }
 
 </script>
@@ -314,6 +360,7 @@ const deleteNote = (item) => {
   -webkit-line-clamp: 11; /* 显示的行数 */
   overflow: hidden; /* 隐藏超出部分 */
   text-overflow: ellipsis; /* 显示省略号 */
+  white-space: pre-wrap; /* 换行符换行 */
 }
 
 @media (max-width: $tablet-breakpoint) {

@@ -1,4 +1,5 @@
 <template>
+  <Loading />
   <Header v-if="showHeaderFooter" />
   <router-view />
   <Footer v-if="showHeaderFooter" />
@@ -7,6 +8,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { RouterView, useRoute } from 'vue-router'
+import Loading from '@/components/Loading.vue'
 import Header from '@/components/Header.vue'
 import Footer from '@/components/Footer.vue'
 
