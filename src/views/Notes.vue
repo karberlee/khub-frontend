@@ -163,55 +163,7 @@ const data = reactive({
     { title: "Medium", value: 3 },
     { title: "High", value: 4 },
   ],
-  noteList: [
-    {
-      _id: "dksjnvjdvsjfdlvkdsmkv",
-      userId: "",
-      level: 0,
-      title: "9.9-9.14工作日志",
-      content: `skcnjdfvndaknlfjvskcnjdfvndaknlfjvskcnjdfvndaknlfjv
-        skcnjdfvndaknlfjvskcnjdfvndaknlfjvskcnjdfvndaknlfjv
-        skcnjdfvndaknlfjvskcnjdfvndaknlfjvskcnjdfvndaknlfjv
-        skcnjdfvndaknlfjvskcnjdfvndaknlfjvskcnjdfvndaknlfjv
-        skcnjdfvndaknlfjvskcnjdfvndaknlfjvskcnjdfvndaknlfjv`,
-      createTime: "2024-10-13 09:30",
-      updateTime: "2024-10-14 17:10"
-    },
-    {
-      _id: "akslmncdsjkvjsdfnkjv",
-      level: 1,
-      title: "9.18-9.20工作日志",
-      content: `skcnjdfvndaknlfjvskcnjdfvndaknlfjvskcnjdfvndaknlfjv
-        skcnjdfvndaknlfjvskcnjdfvndaknlfjvskcnjdfvndaknlfjv
-        skcnjdfvndaknlfjvskcnjdfvndaknlfjvskcnjdfvndaknlfjv
-        skcnjdfvndaknlfjvskcnjdfvndaknlfjvskcnjdfvndaknlfjv
-        skcnjdfvndaknlfjvskcnjdfvndaknlfjvskcnjdfvndaknlfjv`,
-      createTime: "2024-10-13 09:40",
-      updateTime: "2024-10-14 17:12"
-    },
-    {
-      _id: "afgaegrfvaegvreg",
-      level: 2,
-      title: "笔记aaa",
-      content: `skcnjdfvndaknlfjvskcnjdfvndaknlfjvskcnjdfvndaknlfjv
-        skcnjdfvndaknlfjvskcnjdfvndaknlfjvskcnjdfvndaknlfjv
-        skcnjdfvndaknlfjvskcnjdfvndaknlfjvskcnjdfvndaknlfjv
-        skcnjdfvndaknlfjvskcnjdfvndaknlfjvskcnjdfvndaknlfjv
-        skcnjdfvndaknlfjvskcnjdfvndaknlfjvskcnjdfvndaknlfjv`
-    },
-    {
-      _id: "agvertgrstbhth",
-      level: 3,
-      title: "bfgndfynj",
-      content: `skcnjdfvndaknlfjvskcnjdfvndaknlfjvskcnjdfvndaknlfjv`
-    },
-    {
-      _id: "sdffbvsdgvbf",
-      level: 4,
-      title: "bfsgbsfbngfsb",
-      content: `skdvzkjfjknklszvfkvg`
-    },
-  ],
+  noteList: [],
   currentNoteItem: { level: 0 }
 })
 
@@ -226,7 +178,8 @@ const formTitle = computed(() => {
 
 // search note
 const searchNote = () => {
-  store.commit('setGlobalLoading', true)
+  // store.commit('setGlobalLoading', true)
+  alert("not implemented")
   console.log("search note:", search.value)
 }
 
