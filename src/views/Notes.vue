@@ -5,13 +5,20 @@
 
       <div class="search-row">
         <v-text-field
-          max-width="50%"
+          max-width="40%"
           clearable
-          v-model="search"
+          v-model="searchText"
           label="Search"
           prepend-inner-icon="mdi-magnify"
           variant="outlined"
         ></v-text-field>
+        <v-select
+          max-width="10%"
+          v-model="searchLevel"
+          label="Note Level"
+          :items="data.levelSearchSelect"
+          variant="outlined"
+        ></v-select>
         <div class="btn-area">
           <v-btn color="success" @click="searchNote">Search</v-btn>
           <div class="btn-end-area">
@@ -164,20 +171,38 @@ const data = reactive({
     { title: "Medium", value: 3 },
     { title: "High", value: 4 },
   ],
+  levelSearchSelect: [
+    { title: "All", value: -1 },
+    { title: "Default", value: 0 },
+    { title: "Normal", value: 1 },
+    { title: "Low", value: 2 },
+    { title: "Medium", value: 3 },
+    { title: "High", value: 4 },
+  ],
   noteList: [],
   currentNoteItem: { level: 0 }
 })
 
-const search = ref("")
+const searchText = ref("")
+const searchLevel = ref(-1)
 const editDialog = ref(false)
 const deleteDialog = ref(false)
 const formTitle = ref("New Note")
 
 // search note
-const searchNote = () => {
-  // store.commit('setGlobalLoading', true)
-  alert("not implemented")
-  console.log("search note:", search.value)
+const searchNote = async () => {
+  if (searchText.value || searchLevel.value > -1) {
+    store.commit('setGlobalLoading', true)
+    const res = await $get(`/note?search=${searchText.value || ''}&level=${searchLevel.value}`)
+    if (res.data.code === 0) {
+      data.noteList = res.data.body
+    } else {
+      alert("error")
+    }
+    store.commit('setGlobalLoading', false)
+  } else {
+    await init()
+  }
 }
 
 // open insert dialog
@@ -280,6 +305,7 @@ const init = async () => {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 1rem;
 
   .v-text-field {
     background-color: #ffffff;
@@ -293,7 +319,6 @@ const init = async () => {
     display: flex;
     justify-content: space-between;
     flex-grow: 1;
-    margin-left: 1rem;
   }
 
   .btn-end-area {
