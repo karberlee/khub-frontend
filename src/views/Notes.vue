@@ -100,6 +100,7 @@
                     variant="outlined"
                     v-model="data.currentNoteItem.content"
                     label="Content"
+                    rows="20"
                   ></v-textarea>
                 </v-col>
               </v-row>
