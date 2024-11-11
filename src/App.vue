@@ -1,22 +1,30 @@
 <template>
   <Loading />
-  <Header v-if="showHeaderFooter" />
+  <component v-if="showHeaderFooter" :is="headerComponent" />
   <router-view />
-  <Footer v-if="showHeaderFooter" />
+  <component v-if="showHeaderFooter" :is="footerComponent" />
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, defineAsyncComponent } from 'vue'
 import { RouterView, useRoute } from 'vue-router'
 import Loading from '@/components/Loading.vue'
-import Header from '@/components/Header.vue'
-import Footer from '@/components/Footer.vue'
+
+// 通过动态导入来避免不必要的组件加载
+const Header = defineAsyncComponent(() => import('@/components/Header.vue'))
+const Footer = defineAsyncComponent(() => import('@/components/Footer.vue'))
 
 const route = useRoute()
 
+const routeList = ['/login', '/signup']
+
 const showHeaderFooter = computed(() => {
-  return route.path !== '/login'
+  return !routeList.includes(route.path)
 })
+
+// 设置动态组件
+const headerComponent = showHeaderFooter.value ? Header : null
+const footerComponent = showHeaderFooter.value ? Footer : null
 </script>
 
 <style scoped>

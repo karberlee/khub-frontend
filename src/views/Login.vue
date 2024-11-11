@@ -26,6 +26,7 @@
         ></v-text-field>
       </v-col>
       <div class="button" @click="login">Login</div>
+      <div class="signup-notice">Do not have an account? <a href="/signup">Create an account</a></div>
     </div>
   </div>
 </template>
@@ -95,7 +96,7 @@ export default {
       text-align: center;
       font-weight: bold;
       font-size: 24px;
-      margin: 10px 0 20px;
+      margin: 10px 0;
     }
 
     .sub_title {
@@ -129,7 +130,7 @@ export default {
       font-size: 1.25rem;
       font-weight: 500;
       border-radius: 20px;
-      margin: 1rem auto;
+      margin: 10px auto;
       box-shadow: 10px 4px 10px rgba(0, 0, 0, 0.2),
                   -10px -4px 10px rgba(255, 255, 255, 1);
       transition: all 0.2s ease-out;
@@ -142,6 +143,11 @@ export default {
                     inset 10px 4px 10px rgba(0, 0, 0, 0.1),
                     inset -10px -4px 10px rgba(255, 255, 255, 1);
       }
+    }
+
+    .signup-notice {
+      margin: 24px 0;
+      text-align: center;
     }
   }
 }
