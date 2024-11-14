@@ -143,7 +143,9 @@ export default {
         isCheck.password = true
         isCheck.verifyCode = true
         if (!accountErrorMessage.value && !passwordErrorMessage.value && !verifyCodeErrorMessage.value) {
+          store.commit('setGlobalLoading', true)
           const res = await this.$post("/auth/signup", userInfo)
+          store.commit('setGlobalLoading', false)
           if (res.data.code === 0) {
             router.push("/login")
           } else {

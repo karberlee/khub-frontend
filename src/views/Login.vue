@@ -10,6 +10,8 @@
           variant="underlined"
           v-model="userInfo.account"
           label="Account"
+          hint="enter your account"
+          :error-messages="accountErrorMessage"
         ></v-text-field>
       </v-col>
       <!-- <div class="sub_title">Password:</div> -->
@@ -20,6 +22,8 @@
           variant="underlined"
           v-model="userInfo.password"
           label="Password"
+          hint="enter your password"
+          :error-messages="passwordErrorMessage"
           :type="showPwd ? 'text' : 'password'"
           :append-inner-icon="showPwd ? 'mdi-eye' : 'mdi-eye-off'"
           @click:append-inner="showPwd = !showPwd"
@@ -48,14 +52,43 @@ export default {
       password: "",
     })
 
+    const isCheck = reactive({
+      account: false,
+      password: false,
+    })
+
+    const accountErrorMessage = computed(() => {
+      if (isCheck.account && !userInfo.account) {
+        return 'Account is required!'
+      }
+      // if (userInfo.account && userInfo.account.indexOf('@') === -1) {
+      //   return 'Incorrect account format!'
+      // }
+      return ''
+    })
+
+    const passwordErrorMessage = computed(() => {
+      if (isCheck.password && !userInfo.password) {
+        return 'Password is required!'
+      }
+      return ''
+    })
+
     const methods = {
       async login() {
-        const res = await this.$post("/auth/login", userInfo)
-        if (res.data.code === 0) {
-          localStorage.setItem('userId', res.data.body._id) // 存储用户ID
-          router.push("/")
-        } else {
-          router.push("/login")
+        isCheck.account = true
+        isCheck.password = true
+        if (!accountErrorMessage.value && !passwordErrorMessage.value) {
+          store.commit('setGlobalLoading', true)
+          const res = await this.$post("/auth/login", userInfo)
+          store.commit('setGlobalLoading', false)
+          if (res.data.code === 0) {
+            localStorage.setItem('userId', res.data.body._id) // 存储用户ID
+            router.push("/")
+          } else {
+            alert(res.data.message)
+            // router.push("/login")
+          }
         }
       },
     }
@@ -70,6 +103,8 @@ export default {
     return {
       showPwd,
       userInfo,
+      accountErrorMessage,
+      passwordErrorMessage,
       ...methods
     }
   },
