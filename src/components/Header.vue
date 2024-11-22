@@ -6,9 +6,10 @@
 
     <div class="menus">
       <div class="menu-button" :class="{ active: currentRouter === '/' }" @click="replaceRouter('/')">Home</div>
-      <div class="menu-button" :class="{ active: currentRouter === '/users' }" @click="replaceRouter('/users')">Users</div>
-      <div class="menu-button" :class="{ active: currentRouter === '/sites' }" @click="replaceRouter('/sites')">Sites</div>
-      <div class="menu-button" :class="{ active: currentRouter === '/notes' }" @click="replaceRouter('/notes')">Notes</div>
+      <div class="menu-button" :class="{ active: currentRouter === '/users' }" @click="replaceRouter('/users')">User</div>
+      <div class="menu-button" :class="{ active: currentRouter === '/sites' }" @click="replaceRouter('/sites')">Site</div>
+      <div class="menu-button" :class="{ active: currentRouter === '/notes' }" @click="replaceRouter('/notes')">Note</div>
+      <div class="menu-button" :class="{ active: currentRouter === '/blog' }" @click="replaceRouter('/blog')">Blog</div>
     </div>
 
     <div class="avatar">

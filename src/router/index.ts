@@ -8,25 +8,25 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'home',
+      name: 'Home',
       component: Home,
       meta: { auth: true }
     },
     {
       path: '/login',
-      name: 'login',
+      name: 'Login',
       component: Login,
       meta: { auth: false }
     },
     {
       path: '/signup',
-      name: 'signup',
+      name: 'Signup',
       component: () => import('@/views/Signup.vue'),
       meta: { auth: false }
     },
     {
       path: '/users',
-      name: 'users',
+      name: 'Users',
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
@@ -35,15 +35,27 @@ const router = createRouter({
     },
     {
       path: '/notes',
-      name: 'notes',
+      name: 'Notes',
       component: () => import('@/views/Notes.vue'),
       meta: { auth: true }
     },
     {
       path: '/sites',
-      name: 'sites',
+      name: 'Sites',
       component: () => import('@/views/Sites.vue'),
       meta: { auth: true }
+    },
+    {
+      path: '/blog',
+      name: 'Blog',
+      component: () => import('@/views/Blog.vue'),
+      meta: { auth: true },
+    },
+    {
+      path: '/blog/editor/:id?',
+      name: 'BlogEditor',
+      component: () => import('@/views/BlogEditor.vue'),
+      meta: { auth: true },
     },
     {
       path: "/:catchAll(.*)", // vue3区别于vue2的写法，vue2中直接/*

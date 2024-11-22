@@ -24,6 +24,10 @@ import {
   VDialog,
   VSelect,
   VProgressCircular,
+  VRadioGroup,
+  VRadio,
+  VCombobox,
+  // VChip,
 } from 'vuetify/components'
 
 const vuetify = createVuetify({
@@ -50,6 +54,10 @@ const vuetify = createVuetify({
     VDialog,
     VSelect,
     VProgressCircular,
+    VRadioGroup,
+    VRadio,
+    VCombobox,
+    // VChip,
   },
 })
 
