@@ -36,27 +36,27 @@
           v-for="note in data.noteList"
           :key="note._id"
         >
-        <v-card
-          hover
-          :color="data.colorMapping[note.level]"
-          height="20rem"
-          @click="editNote(note)"
-        >
-          <v-card-item>
-            <!-- <template v-slot:prepend>
-              <v-icon color="primary" icon="mdi-account"></v-icon>
-            </template> -->
-            <!-- <template v-slot:append>
-              <v-icon color="success" icon="mdi-check"></v-icon>
-            </template> -->
-            <v-card-title>{{ note.title || "No Title" }}</v-card-title>
-            <v-card-subtitle>{{ getLocalTime(note.updateTime) || "No Update Time" }}</v-card-subtitle>
-          </v-card-item>
+          <v-card
+            hover
+            :color="data.colorMapping[note.level]"
+            height="20rem"
+            @click="editNote(note)"
+          >
+            <v-card-item>
+              <!-- <template v-slot:prepend>
+                <v-icon color="primary" icon="mdi-account"></v-icon>
+              </template> -->
+              <!-- <template v-slot:append>
+                <v-icon color="success" icon="mdi-check"></v-icon>
+              </template> -->
+              <v-card-title>{{ note.title || "No Title" }}</v-card-title>
+              <v-card-subtitle>{{ getLocalTime(note.updateTime) || "No Update Time" }}</v-card-subtitle>
+            </v-card-item>
 
-          <v-card-text>
-            <div class="card-content">{{ note.content }}</div>
-          </v-card-text>
-        </v-card>
+            <v-card-text>
+              <div class="card-content">{{ note.content }}</div>
+            </v-card-text>
+          </v-card>
         </v-col>
       </v-row>
 
@@ -195,12 +195,12 @@ const searchNote = async () => {
   if (searchText.value || searchLevel.value > -1) {
     store.commit('setGlobalLoading', true)
     const res = await $get(`/note?search=${searchText.value || ''}&level=${searchLevel.value}`)
+    store.commit('setGlobalLoading', false)
     if (res.data.code === 0) {
       data.noteList = res.data.body
     } else {
-      alert("error")
+      alert(res.data.message)
     }
-    store.commit('setGlobalLoading', false)
   } else {
     await init()
   }
@@ -275,12 +275,12 @@ onMounted(() => {
 const init = async () => {
   store.commit('setGlobalLoading', true)
   const res = await $get("/note")
+  store.commit('setGlobalLoading', false)
   if (res.data.code === 0) {
     data.noteList = res.data.body
   } else {
-    alert("error")
+    alert(res.data.message)
   }
-  store.commit('setGlobalLoading', false)
 }
 
 </script>

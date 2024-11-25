@@ -291,7 +291,7 @@ const init = async () => {
   if (res.data.code === 0) {
     data.siteList = res.data.body
   } else {
-    alert("error")
+    alert(res.data.message)
   }
   loading.value = false
 }
