@@ -8,6 +8,7 @@
         label="Title"
         prepend-inner-icon="mdi-magnify"
         variant="outlined"
+        maxlength="50"
       ></v-text-field>
       <v-combobox
         width="10%"

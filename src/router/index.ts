@@ -58,6 +58,12 @@ const router = createRouter({
       meta: { auth: true },
     },
     {
+      path: '/blog/detail/:id',
+      name: 'BlogDetail',
+      component: () => import('@/views/BlogDetail.vue'),
+      meta: { auth: true },
+    },
+    {
       path: "/:catchAll(.*)", // vue3区别于vue2的写法，vue2中直接/*
       redirect: "/"
     }
