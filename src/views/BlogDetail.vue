@@ -12,6 +12,18 @@
       </div>
 
       <div class="blog-content">
+        <v-card class="blog-sider">
+          <v-card-item>
+            <!-- <template v-slot:prepend>
+              <v-icon color="primary" icon="mdi-account"></v-icon>
+            </template> -->
+            <!-- <template v-slot:append>
+              <v-icon color="success" icon="mdi-check"></v-icon>
+            </template> -->
+            <v-card-title>{{ blog.owner?.name || "No Name" }}</v-card-title>
+            <v-card-subtitle>Come here {{ signupDays }} days</v-card-subtitle>
+          </v-card-item>
+        </v-card>
         <MdPreview class="md-preview" :id="id" v-model="blog.content" />
         <MdCatalog class="md-catalog" :editorId="id" :scrollElement="scrollElement" />
       </div>
@@ -37,6 +49,12 @@ const id = 'preview-only'
 const scrollElement = document.documentElement
 
 const blog = reactive({
+  // owner: {
+  //   _id: "",
+  //   account: "",
+  //   name: "",
+  //   createTime: "",
+  // },
   // title: "",
   // tags: [],
   // content: "",
@@ -49,6 +67,14 @@ const updateTime = computed(() => {
   return date.toLocaleString()
 })
 
+const signupDays = computed(() => {
+  const createDate = new Date(blog.owner?.createTime)
+  const currentDate = new Date()
+  const timeDiff = currentDate - createDate
+  const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24))
+  return days
+})
+
 onMounted(() => {
   init()
 })
@@ -58,6 +84,7 @@ const init = async () => {
     store.commit('setGlobalLoading', true)
     const res = await $get(`/doc/${route.params.id}`)
     if (res.data.code === 0) {
+      blog.owner = res.data.body.owner
       blog.title = res.data.body.title
       blog.tags = res.data.body.tags
       blog.content = res.data.body.content
@@ -116,14 +143,26 @@ const init = async () => {
   display: flex;
   gap: 1rem;
 
+  .blog-sider {
+    height: 600px;
+    flex: 1;
+    background-color: #ffffff;
+    border-radius: 10px;
+    // padding: 1rem;
+    position: -webkit-sticky;  /* For Safari support */
+    position: sticky;          /* For modern browsers */
+    top: 6.5rem;                    /* 固定在顶部 */
+    overflow-y: auto;          /* 如果内容过多，可以滚动 */
+  }
+
   .md-preview {
-    width: 80%;
+    flex: 3;
     border-radius: 10px;
   }
 
   .md-catalog {
     padding: 1rem;
-    flex-grow: 1;
+    flex: 1;
     background-color: #ffffff;
     border-radius: 10px;
     position: -webkit-sticky;  /* For Safari support */

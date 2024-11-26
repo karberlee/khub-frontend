@@ -28,6 +28,7 @@ import {
   VRadio,
   VCombobox,
   VChip,
+  VImg,
 } from 'vuetify/components'
 
 const vuetify = createVuetify({
@@ -58,6 +59,7 @@ const vuetify = createVuetify({
     VRadio,
     VCombobox,
     VChip,
+    VImg,
   },
 })
 
