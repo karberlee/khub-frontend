@@ -39,7 +39,7 @@
               <v-chip color="cyan" label size="x-small">No Tag</v-chip>
             </div>
             <v-card-text>
-              <div class="card-content">{{ blog.content }}</div>
+              <div class="card-content">{{ renderMarkdownToText(blog.content) }}</div>
             </v-card-text>
           </v-card>
         </v-col>
@@ -52,6 +52,7 @@
 import { ref, reactive, computed, watch, onMounted, getCurrentInstance } from "vue"
 import { useRouter, useRoute } from "vue-router"
 import { useStore } from "vuex"
+import * as marked from 'marked'
 const { appContext } = getCurrentInstance()
 const { $get, $post, $patch, $delete } = appContext.config.globalProperties
 
@@ -61,6 +62,12 @@ const router = useRouter()
 const data = reactive({
   blogList: [],
 })
+
+const renderMarkdownToText = (content) => {
+  // 使用 marked 将 Markdown 渲染为 HTML，然后再清除 HTML 标签
+  const html = marked.parse(content)
+  return html.replace(/<\/?[^>]+(>|$)/g, "") // 去除 HTML 标签
+}
 
 const getLocalTime = (utcTime) => {
   const date = new Date(utcTime)
