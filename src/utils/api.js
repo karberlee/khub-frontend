@@ -44,11 +44,15 @@ http.interceptors.response.use(
 
 
 
-export const get = (url) => {
+export const get = (url, query = {}) => {
+   // 使用 URLSearchParams 构造查询字符串
+   const queryString = new URLSearchParams(query).toString()
+   // 如果有查询参数，拼接到 URL 后面
+   const fullUrl = queryString ? `${url}?${queryString}` : url
   return new Promise((resolve, reject) => {
     http({
       method: "get",
-      url: url
+      url: fullUrl
     })
     .then(res => {
       resolve(res);

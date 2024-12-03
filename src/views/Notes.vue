@@ -193,8 +193,12 @@ const formTitle = ref("New Note")
 // search note
 const searchNote = async () => {
   if (searchText.value || searchLevel.value > -1) {
+    const query = {
+      search: searchText.value || '',
+      level: searchLevel.value
+    }
     store.commit('setGlobalLoading', true)
-    const res = await $get(`/note?search=${searchText.value || ''}&level=${searchLevel.value}`)
+    const res = await $get('/note', query)
     store.commit('setGlobalLoading', false)
     if (res.data.code === 0) {
       data.noteList = res.data.body
