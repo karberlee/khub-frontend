@@ -69,9 +69,10 @@ watch(
 
 const save = async () => {
   store.commit('setGlobalLoading', true)
-  // alert(JSON.stringify(blog))
-  if (route.params.id) {
-    await $patch(`/doc/${route.params.id}`, blog)
+  if (blog._id) {
+    const blogId = blog._id
+    delete blog._id
+    await $patch(`/doc/${blogId}`, blog)
   } else {
     await $post("/doc", blog)
   }
@@ -88,6 +89,7 @@ const init = async () => {
     store.commit('setGlobalLoading', true)
     const res = await $get(`/doc/${route.params.id}`)
     if (res.data.code === 0) {
+      blog._id = res.data.body._id
       blog.title = res.data.body.title
       blog.tags = res.data.body.tags
       blog.content = res.data.body.content

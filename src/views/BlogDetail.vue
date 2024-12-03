@@ -139,7 +139,7 @@ const deleteConfirm = async () => {
   await $delete(`/doc/${blog._id}`)
   store.commit('setGlobalLoading', false)
   deleteCancel()
-  replaceRouter('/blog')
+  router.push('/blog')
 }
 
 onMounted(() => {
@@ -161,6 +161,7 @@ const init = async () => {
       blog.updateTime = res.data.body.updateTime
     } else {
       alert(res.data.message)
+      router.push('/blog')
     }
   }
 }
