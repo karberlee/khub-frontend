@@ -13,13 +13,41 @@
     </div>
 
     <div class="avatar">
-      <v-menu open-on-hover>
+      <v-menu open-on-hover offset="8">
         <template v-slot:activator="{ props }">
           <Avatar v-bind="props" :image="user.avatar" :name="user.name" size="3rem"
             :altText="user.name + ' Avatar'" />
         </template>
 
-        <v-list>
+        <v-card class="user-card" width="20rem">
+          <v-img
+            height="8rem"
+            :src="`/src/assets/images/samples/001.jpg`"
+            cover
+          ></v-img>
+          <div class="avatar-row">
+            <Avatar v-bind="props" :image="user.avatar" :name="user.name" size="4rem"
+                  :altText="user.name + ' Avatar'" />
+          </div>
+          <v-card-item class="card-item">
+            <!-- <template v-slot:prepend>
+              <Avatar v-bind="props" :image="user.avatar" :name="user.name" size="3rem"
+                :altText="user.name + ' Avatar'" />
+            </template> -->
+            <!-- <template v-slot:append>
+              <v-icon color="success" icon="mdi-check"></v-icon>
+            </template> -->
+            <v-card-title>{{ user.name || "No Name" }}</v-card-title>
+            <v-card-subtitle>{{ user.account || "No Account" }}</v-card-subtitle>
+          </v-card-item>
+          <v-divider></v-divider>
+          <div class="btn-area">
+            <v-btn color="success" variant="plain" @click="replaceRouter('/dashboard')">Dashboard</v-btn>
+            <v-btn color="success" variant="plain" @click="logout">Logout</v-btn>
+          </div>
+        </v-card>
+
+        <!-- <v-list>
           <v-list-item v-for="(item, index) in avatarMenus" :key="index" :value="item">
             <template v-slot:prepend>
               <v-icon :icon="item.icon"></v-icon>
@@ -38,7 +66,7 @@
             </template>
             <div>Logout</div>
           </v-list-item>
-        </v-list>
+        </v-list> -->
       </v-menu>
     </div>
   </header>
@@ -115,7 +143,7 @@ header {
   left: 0;
   width: 100%;
   height: 5rem;
-  background-color: var(--primary-color);
+  // background-color: var(--primary-color);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -175,5 +203,29 @@ header {
   width: 5rem;
   display: grid;
   place-items: center;
+}
+
+.user-card {
+  text-align: center;
+  position: relative;  /* 使v-avatar绝对定位相对于卡片 */
+
+  .avatar-row {
+    position: absolute;
+    top: 6rem;  /* 设置头像的位置，使其一半在图片上 */
+    left: 50%;  /* 水平居中 */
+    transform: translateX(-50%);  /* 精确居中 */
+    // z-index: 1;  /* 确保头像在最上层 */
+  }
+
+  .card-item {
+    margin-top: 2rem;
+  }
+
+  .btn-area {
+    margin: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+  }
 }
 </style>

@@ -13,7 +13,7 @@ footer {
   height: 5rem;
   margin-top: 2rem;
   color: var(--text-color);
-  background-color: var(--primary-color);
+  /* background-color: var(--primary-color); */
   font-weight: 500;
   display: grid;
   place-items: center;

@@ -29,6 +29,7 @@ import {
   VCombobox,
   VChip,
   VImg,
+  VDivider,
 } from 'vuetify/components'
 
 const vuetify = createVuetify({
@@ -60,6 +61,7 @@ const vuetify = createVuetify({
     VCombobox,
     VChip,
     VImg,
+    VDivider,
   },
 })
 
