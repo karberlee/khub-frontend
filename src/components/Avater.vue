@@ -1,12 +1,12 @@
 <template>
-  <div class="avatar" :style="{ width: size, height: size }">
+  <div class="avatar" :style="{ width: size, height: size, 'background-color': color }">
     <img v-if="image" :src="image" :alt="altText" class="avatar-image" />
     <div v-else class="avatar-placeholder">{{ initials }}</div>
   </div>
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { ref, computed, onMounted } from 'vue'
 
 // Props
 const props = defineProps({
@@ -20,7 +20,7 @@ const props = defineProps({
     type: String,
     default: 'Avatar',
   },
-});
+})
 
 // Computed properties
 const initials = computed(() => {
@@ -28,10 +28,30 @@ const initials = computed(() => {
     return props.name
       .split(' ')
       .map((name) => name.charAt(0).toUpperCase())
-      .join('');
+      .join('')
   }
-  return '';
-});
+  return ''
+})
+
+const color = computed(() => {
+  if (props.name) {
+    return generateColor(props.name)
+  }
+  return '#ffffff'
+})
+
+const generateColor = (str) => {
+  // 将字符串的字符编码值转换为一个 32 位整数
+  let hash = 0
+  for (let i = 0; i < str.length; i++) {
+    hash = (hash << 5) - hash + str.charCodeAt(i) // 简单的哈希算法
+    hash |= 0 // 确保 hash 是一个 32 位整数
+  }
+  
+  // 将哈希值转换为十六进制，并确保生成一个有效的颜色（6位颜色）
+  const color = (hash & 0x00FFFFFF).toString(16).toUpperCase() // 取低24位作为颜色值
+  return `#${'000000'.substring(0, 6 - color.length) + color}`
+}
 </script>
 
 <style scoped>
@@ -41,9 +61,9 @@ const initials = computed(() => {
   justify-content: center;
   border-radius: 50%;
   overflow: hidden;
-  background-color: var(--background-color);
+  /* background-color: var(--background-color); */
   cursor: pointer;
-  /* border: 2px solid #ddd; */
+  border: 3px solid #ddd;
 }
 
 .avatar-image {

@@ -15,7 +15,7 @@
     <div class="avatar">
       <v-menu open-on-hover offset="8">
         <template v-slot:activator="{ props }">
-          <Avatar v-bind="props" :image="user.avatar" :name="user.name" size="3rem"
+          <Avatar v-bind="props" :image="user.avatar" :name="user.name" size="3rem" color="red"
             :altText="user.name + ' Avatar'" />
         </template>
 
@@ -26,12 +26,12 @@
             cover
           ></v-img>
           <div class="avatar-row">
-            <Avatar v-bind="props" :image="user.avatar" :name="user.name" size="4rem"
+            <Avatar :image="user.avatar" :name="user.name" size="4rem"
                   :altText="user.name + ' Avatar'" />
           </div>
           <v-card-item class="card-item">
             <!-- <template v-slot:prepend>
-              <Avatar v-bind="props" :image="user.avatar" :name="user.name" size="3rem"
+              <Avatar :image="user.avatar" :name="user.name" size="3rem"
                 :altText="user.name + ' Avatar'" />
             </template> -->
             <!-- <template v-slot:append>
@@ -208,6 +208,7 @@ header {
 .user-card {
   text-align: center;
   position: relative;  /* 使v-avatar绝对定位相对于卡片 */
+  // padding: 0.25rem;
 
   .avatar-row {
     position: absolute;
