@@ -42,7 +42,7 @@
           </v-card-item>
           <v-divider></v-divider>
           <div class="btn-area">
-            <v-btn color="success" variant="plain" @click="replaceRouter('/dashboard')">Dashboard</v-btn>
+            <v-btn color="success" variant="plain" @click="replaceRouter('/manage/sites')">Dashboard</v-btn>
             <v-btn color="success" variant="plain" @click="logout">Logout</v-btn>
           </div>
         </v-card>
@@ -102,6 +102,7 @@ const avatarMenus = reactive([
 
 // Navigate to Home page
 const replaceRouter = function (path) {
+  console.log(path)
   router.push(path)
 }
 
@@ -143,7 +144,7 @@ header {
   left: 0;
   width: 100%;
   height: 5rem;
-  // background-color: var(--primary-color);
+  background-color: var(--background-color);
   display: flex;
   justify-content: space-between;
   align-items: center;

@@ -11,9 +11,10 @@
 <style scoped>
 footer {
   height: 5rem;
+  width: 100%;
   margin-top: 2rem;
   color: var(--text-color);
-  /* background-color: var(--primary-color); */
+  background-color: var(--background-color);
   font-weight: 500;
   display: grid;
   place-items: center;

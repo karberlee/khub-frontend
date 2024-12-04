@@ -30,6 +30,8 @@ import {
   VChip,
   VImg,
   VDivider,
+  VTabs,
+  VTab,
 } from 'vuetify/components'
 
 const vuetify = createVuetify({
@@ -62,6 +64,8 @@ const vuetify = createVuetify({
     VChip,
     VImg,
     VDivider,
+    VTabs,
+    VTab,
   },
 })
 

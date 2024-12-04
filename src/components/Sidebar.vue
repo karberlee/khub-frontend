@@ -1,0 +1,63 @@
+<template>
+  <div class="sidebar">
+    <v-tabs
+      v-model="tab"
+      color="primary"
+      direction="vertical"
+    >
+      <v-tab
+        v-for="item in menuItems"
+        :prepend-icon="item.icon"
+        :text="item.name"
+        :value="item.name"
+        @click="replaceRouter(item.path)"
+      ></v-tab>
+    </v-tabs>
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted } from "vue"
+import { useRouter, useRoute } from "vue-router"
+
+const route = useRoute()
+const router = useRouter()
+
+const menuItems = [
+  { name: 'Dashboard', icon: 'mdi-view-dashboard', path: '/manage/dashboard' },
+  { name: 'Site', icon: 'mdi-web', path: '/manage/sites' },
+  { name: 'Note', icon: 'mdi-note-multiple', path: '/manage/notes' },
+  { name: 'Blog', icon: 'mdi-post', path: '/manage/blog' },
+]
+
+const tab = ref('Dashboard')
+
+const replaceRouter = function (path) {
+  router.push(path)
+}
+
+onMounted(() => {
+  init()
+})
+
+const init = () => {
+  const currentItem = menuItems.find(item => item.path == route.path)
+  if (currentItem) {
+    tab.value = currentItem.name
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+.sidebar {
+  width: 15rem;
+  margin-top: 5rem;
+  // background: #f4f4f4;
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 
+    0 2px 4px -1px rgba(0, 0, 0, .2), 
+    0 4px 5px 0 rgba(0, 0, 0, .14), 
+    0 1px 10px 0 rgba(0, 0, 0, .12);
+}
+</style>
