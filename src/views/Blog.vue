@@ -19,7 +19,7 @@
           >
             <v-img
               height="200px"
-              :src="`/src/assets/images/samples/00${i + 1}.jpg`"
+              :src="`/images/samples/00${i + 1}.jpg`"
               cover
             ></v-img>
             <v-card-item>

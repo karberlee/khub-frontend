@@ -22,7 +22,7 @@
         <v-card class="user-card" width="20rem">
           <v-img
             height="8rem"
-            :src="`/src/assets/images/samples/001.jpg`"
+            :src="`/images/samples/001.jpg`"
             cover
           ></v-img>
           <div class="avatar-row">
