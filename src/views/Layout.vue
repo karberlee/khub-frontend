@@ -1,13 +1,13 @@
 <template>
   <div class="layout">
-    <component v-if="showHeaderFooter" :is="headerComponent" />
+    <component v-if="showHeader" :is="headerComponent" />
     <div class="content">
       <Sidebar v-if="showSidebar" />
       <div class="main-content">
         <router-view />
       </div>
     </div>
-    <component v-if="showHeaderFooter" :is="footerComponent" />
+    <component v-if="showFooter" :is="footerComponent" />
   </div>
 </template>
 
@@ -24,18 +24,22 @@ const route = useRoute()
 
 const routeList = ['/login', '/signup']
 
-const showHeaderFooter = computed(() => {
+const showHeader = computed(() => {
   return !routeList.includes(route.path)
 })
-
-// 设置动态组件
-const headerComponent = showHeaderFooter.value ? Header : null
-const footerComponent = showHeaderFooter.value ? Footer : null
 
 // 仅当 URL 是以 '/manage/' 开头时才显示菜单栏
 const showSidebar = computed(() => {
   return route.path.startsWith('/manage')
 })
+
+const showFooter = computed(() => {
+  return !routeList.includes(route.path) && !route.path.startsWith('/manage')
+})
+
+// 设置动态组件
+const headerComponent = showHeader.value ? Header : null
+const footerComponent = showFooter.value ? Footer : null
 </script>
 
 <style lang="scss" scoped>

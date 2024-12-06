@@ -127,6 +127,12 @@ const newRoutes = [
     meta: { auth: true },
   },
   {
+    path: '/manage/dashboard',
+    name: 'ManageDashboard',
+    component: () => import('@/views/Dashboard.vue'),
+    meta: { auth: true }
+  },
+  {
     path: '/manage/notes',
     name: 'ManageNotes',
     component: () => import('@/views/Notes.vue'),

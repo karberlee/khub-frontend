@@ -51,10 +51,11 @@ const init = () => {
 <style lang="scss" scoped>
 .sidebar {
   width: 15rem;
+  height: calc(100vh - 5rem);
   margin-top: 5rem;
   // background: #f4f4f4;
   padding: 1rem;
-  border-radius: 10px;
+  // border-radius: 10px;
   box-shadow: 
     0 2px 4px -1px rgba(0, 0, 0, .2), 
     0 4px 5px 0 rgba(0, 0, 0, .14), 
