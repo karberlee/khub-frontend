@@ -17,7 +17,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue"
+import { ref, watch, onMounted } from "vue"
 import { useRouter, useRoute } from "vue-router"
 
 const route = useRoute()
@@ -31,6 +31,10 @@ const menuItems = [
 ]
 
 const tab = ref('Dashboard')
+
+watch(() => route.path, () => {
+  init()
+})
 
 const replaceRouter = function (path) {
   router.push(path)
@@ -53,12 +57,14 @@ const init = () => {
   width: 15rem;
   height: calc(100vh - 5rem);
   margin-top: 5rem;
-  // background: #f4f4f4;
+  background: var(--pure-color);
   padding: 1rem;
   // border-radius: 10px;
+  position: fixed;
+  left: 0;
   box-shadow: 
-    0 2px 4px -1px rgba(0, 0, 0, .2), 
-    0 4px 5px 0 rgba(0, 0, 0, .14), 
-    0 1px 10px 0 rgba(0, 0, 0, .12);
+    2px 0 4px 0 rgba(0, 0, 0, .2); 
+    // 0 4px 5px 0 rgba(0, 0, 0, .14), 
+    // 0 1px 10px 0 rgba(0, 0, 0, .12);
 }
 </style>

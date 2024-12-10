@@ -2,7 +2,9 @@
   <div class="layout">
     <component v-if="showHeader" :is="headerComponent" />
     <div class="content">
-      <Sidebar v-if="showSidebar" />
+      <div class="sider" v-if="showSidebar">
+        <Sidebar/>
+      </div>
       <div class="main-content">
         <router-view />
       </div>
@@ -50,7 +52,10 @@ const footerComponent = showFooter.value ? Footer : null
 }
 .content {
   display: flex;
-  justify-content: center;
+  // justify-content: center;
+}
+.sider {
+  width: 15rem;
 }
 .main-content {
   flex: 1;

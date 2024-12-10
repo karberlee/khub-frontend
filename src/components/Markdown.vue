@@ -68,8 +68,8 @@ watch(localValue, (newVal) => {
 
 // 监听父组件传递的 modelValue 变化，并更新本地值，解决初次加载无法接收传值问题
 watch(() => props.modelValue, (newValue) => {
-  localValue.value = newValue;
-});
+  localValue.value = newValue
+})
 </script>
 
 <style lang="scss" scoped>

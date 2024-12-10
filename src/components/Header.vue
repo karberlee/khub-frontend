@@ -4,12 +4,41 @@
       <img class="main-icon" src="@/assets/images/panda.png" @click="replaceRouter('/')" alt="">
     </div>
 
-    <div class="menus">
+    <!-- <div class="menus">
       <div class="menu-button" :class="{ active: currentRouter === '/' }" @click="replaceRouter('/')">Home</div>
       <div class="menu-button" :class="{ active: currentRouter === '/users' }" @click="replaceRouter('/users')">User</div>
       <div class="menu-button" :class="{ active: currentRouter === '/sites' }" @click="replaceRouter('/sites')">Site</div>
       <div class="menu-button" :class="{ active: currentRouter === '/notes' }" @click="replaceRouter('/notes')">Note</div>
       <div class="menu-button" :class="{ active: currentRouter === '/blog' }" @click="replaceRouter('/blog')">Blog</div>
+    </div> -->
+
+    <div class="menus">
+      <v-btn
+        color="success"
+        variant="plain"
+        :active="currentRouter === '/'"
+        active-color="info"
+        @click="replaceRouter('/')"
+      >Home</v-btn>
+      <v-btn
+        color="success"
+        variant="plain"
+        :active="currentRouter.startsWith('/manage')"
+        active-color="info"
+        @click="replaceRouter('/manage/dashboard')"
+      >Dashboard</v-btn>
+      <v-btn
+        color="success"
+        variant="plain"
+        :active="currentRouter === '/blog'"
+        active-color="info"
+        @click="replaceRouter('/blog')"
+      >Blog</v-btn>
+      <v-btn
+        color="success"
+        variant="plain"
+        @click="newBrowserTab('https://github.com/karberlee')"
+      ><v-icon size="x-large" icon="mdi-github"></v-icon></v-btn>
     </div>
 
     <div class="avatar">
@@ -106,6 +135,10 @@ const replaceRouter = function (path) {
   router.push(path)
 }
 
+const newBrowserTab = function (link) {
+  window.open(link)
+}
+
 // change theme
 const changeTheme = function () {
   theme.value = theme.value === "default" ? "dark" : "default"
@@ -144,15 +177,16 @@ header {
   left: 0;
   width: 100%;
   height: 5rem;
-  background-color: var(--background-color);
+  // background-color: var(--background-color);
+  background-color: var(--pure-color);
   display: flex;
   justify-content: space-between;
   align-items: center;
   z-index: 999;
   box-shadow: 
-    0 2px 4px -1px rgba(0, 0, 0, .2), 
-    0 4px 5px 0 rgba(0, 0, 0, .14), 
-    0 1px 10px 0 rgba(0, 0, 0, .12);
+    0 2px 4px 0 rgba(0, 0, 0, .2);
+    // 0 4px 5px 0 rgba(0, 0, 0, .14), 
+    // 0 1px 10px 0 rgba(0, 0, 0, .12);
 }
 
 .main-button {
@@ -179,6 +213,26 @@ header {
 .menus {
   height: 100%;
   display: flex;
+  align-items: center;
+  gap: 5rem;
+
+  // .menu-button {
+  //   height: 100%;
+  //   min-width: 10rem;
+  //   display: grid;
+  //   place-items: center;
+  //   color: var(--text-color);
+  //   font-weight: bolder;
+  //   cursor: pointer;
+  // }
+
+  // .menu-button:hover {
+  //   background-color: var(--secondary-color);
+  // }
+
+  // .menu-button.active {
+  //   background-color: var(--secondary-color);
+  // }
 
   .menu-button {
     height: 100%;
@@ -188,14 +242,6 @@ header {
     color: var(--text-color);
     font-weight: bolder;
     cursor: pointer;
-  }
-
-  .menu-button:hover {
-    background-color: var(--secondary-color);
-  }
-
-  .menu-button.active {
-    background-color: var(--secondary-color);
   }
 }
 
