@@ -31,8 +31,11 @@
       <v-row>
         <v-col
           cols="12"
-          md="2"
-          sm="6"
+          xxl="2"
+          xl="3"
+          lg="4"
+          md="6"
+          sm="12"
           v-for="note in data.noteList"
           :key="note._id"
         >

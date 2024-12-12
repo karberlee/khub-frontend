@@ -131,7 +131,6 @@ const avatarMenus = reactive([
 
 // Navigate to Home page
 const replaceRouter = function (path) {
-  console.log(path)
   router.push(path)
 }
 

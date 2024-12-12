@@ -8,8 +8,9 @@
       <v-row>
         <v-col
           cols="12"
-          md="3"
-          sm="6"
+          xl="3"
+          md="6"
+          sm="12"
           v-for="(blog, i) in data.blogList"
           :key="blog._id"
         >
