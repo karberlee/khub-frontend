@@ -1,6 +1,6 @@
 <template>
   <footer>
-    <div>&copy; 2024 My Application Footer</div>
+    <div>Copyright &copy; 2024 Karber Lee. All rights reserved.</div>
   </footer>
 </template>
 

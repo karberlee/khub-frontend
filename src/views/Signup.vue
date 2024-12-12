@@ -156,10 +156,10 @@ export default {
     }
     
     onMounted(() => {
-      // const token = localStorage.getItem('token')
-      // if (token) {
-      //   router.replace("/")
-      // }
+      const token = localStorage.getItem('token')
+      if (token) {
+        router.replace("/")
+      }
     })
 
     return {

@@ -147,7 +147,8 @@ const changeTheme = function () {
 const logout = function () {
   localStorage.removeItem("token")
   localStorage.removeItem("userId")
-  window.location.reload()
+  // window.location.reload()
+  router.push('/login')
 }
 
 watch(theme, (newTheme) => {
