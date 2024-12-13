@@ -20,10 +20,17 @@ const props = defineProps({
     type: String,
     default: 'Avatar',
   },
+  noUser: {
+    type: Boolean,
+    default: false
+  },
 })
 
 // Computed properties
 const initials = computed(() => {
+  if (props.noUser) {
+    return 'Login'
+  }
   if (props.name) {
     return props.name
       .split(' ')

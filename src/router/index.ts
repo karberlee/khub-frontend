@@ -73,7 +73,7 @@ const newRoutes = [
     path: '/',
     name: 'Home',
     component: Home,
-    meta: { auth: true },
+    meta: { auth: false },
   },
   {
     path: '/login',
@@ -192,7 +192,7 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const token = localStorage.getItem('token')
   if (to.meta.auth && !token) {
-    next({ name: 'login' })
+    next({ name: 'Login' })
   } else {
     next()
   }

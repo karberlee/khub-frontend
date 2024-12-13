@@ -41,7 +41,7 @@
       ><v-icon size="x-large" icon="mdi-github"></v-icon></v-btn>
     </div>
 
-    <div class="avatar">
+    <div class="avatar" v-if="user.name">
       <v-menu open-on-hover offset="8">
         <template v-slot:activator="{ props }">
           <Avatar v-bind="props" :image="user.avatar" :name="user.name" size="3rem" color="red"
@@ -97,6 +97,9 @@
           </v-list-item>
         </v-list> -->
       </v-menu>
+    </div>
+    <div class="login-option"  v-else>
+      <v-btn color="success" @click="replaceRouter('/login')">Login</v-btn>
     </div>
   </header>
 </template>
@@ -165,8 +168,10 @@ onMounted(() => {
 
 const getUserInfo = async () => {
   const userId = localStorage.getItem('userId')
-  const res = await $get(`/user/${userId}`)
-  store.commit('setUser', res.data.body)
+  if (userId) {
+    const res = await $get(`/user/${userId}`)
+    store.commit('setUser', res.data.body)
+  }
 }
 </script>
 
@@ -275,5 +280,13 @@ header {
     justify-content: space-between;
     gap: 1rem;
   }
+}
+
+.login-option {
+  height: 100%;
+  width: 5rem;
+  display: grid;
+  place-items: center;
+  margin: 0 1rem;
 }
 </style>

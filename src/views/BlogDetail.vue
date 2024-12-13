@@ -5,9 +5,11 @@
 
         <v-card class="blog-sider">
           <v-card-item>
-            <!-- <template v-slot:prepend>
-              <v-icon color="primary" icon="mdi-account"></v-icon>
-            </template> -->
+            <template v-slot:prepend>
+              <!-- <v-icon color="primary" icon="mdi-account"></v-icon> -->
+              <Avatar v-bind="props" :image="blog.owner?.avatar" :name="blog.owner?.name" size="3rem" color="red"
+                :altText="blog.owner?.name + ' Avatar'" />
+            </template>
             <!-- <template v-slot:append>
               <v-icon color="success" icon="mdi-check"></v-icon>
             </template> -->
@@ -76,6 +78,7 @@ import { useRouter, useRoute } from "vue-router"
 import { MdPreview, MdCatalog } from 'md-editor-v3'
 // preview.css相比style.css少了编辑器那部分样式
 import 'md-editor-v3/lib/preview.css'
+import Avatar from "@/components/Avater.vue"
 const { appContext } = getCurrentInstance()
 const { $get, $post, $patch, $delete } = appContext.config.globalProperties
 
@@ -183,6 +186,8 @@ const init = async () => {
 
   .blog-sider {
     flex: 1;
+    // width: 15%;
+    min-width: 10rem;
     background-color: #ffffff;
     border-radius: 10px;
     // padding: 1rem;
@@ -195,6 +200,7 @@ const init = async () => {
 
   .preview-area {
     flex: 4;
+    width: 20rem;
     border-radius: 10px;
 
     .title-row {
@@ -260,6 +266,8 @@ const init = async () => {
   .md-catalog {
     padding: 1rem;
     flex: 1;
+    // width: 15%;
+    min-width: 10rem;
     background-color: #ffffff;
     border-radius: 10px;
     position: -webkit-sticky;  /* For Safari support */
@@ -268,5 +276,12 @@ const init = async () => {
     height: 100%;             /* 确保它覆盖整个视窗的高度 */
     overflow-y: auto;          /* 如果内容过多，可以滚动 */
   }
+}
+
+@media (max-width: 1280px) {
+.preview-content {
+  width: 100%;
+  padding: 0 1rem;
+}
 }
 </style>
