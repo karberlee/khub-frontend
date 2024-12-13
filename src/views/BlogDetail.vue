@@ -7,7 +7,7 @@
           <v-card-item>
             <template v-slot:prepend>
               <!-- <v-icon color="primary" icon="mdi-account"></v-icon> -->
-              <Avatar v-bind="props" :image="blog.owner?.avatar" :name="blog.owner?.name" size="3rem" color="red"
+              <Avatar v-bind="props" :image="blog.owner?.avatar" :name="blog.owner?.name" size="4rem" color="red"
                 :altText="blog.owner?.name + ' Avatar'" />
             </template>
             <!-- <template v-slot:append>

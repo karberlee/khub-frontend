@@ -44,7 +44,7 @@
     <div class="avatar" v-if="user.name">
       <v-menu open-on-hover offset="8">
         <template v-slot:activator="{ props }">
-          <Avatar v-bind="props" :image="user.avatar" :name="user.name" size="3rem" color="red"
+          <Avatar v-bind="props" :image="user.avatar" :name="user.name" size="4rem" color="red"
             :altText="user.name + ' Avatar'" />
         </template>
 
