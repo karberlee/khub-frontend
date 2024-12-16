@@ -16,12 +16,14 @@
         >
           <v-card
             link
+            class="card"
             @click="openDetail(blog._id)"
           >
             <v-img
               height="200px"
               :src="`/images/samples/00${i + 1}.jpg`"
               cover
+              class="card-img"
             ></v-img>
             <v-card-item>
               <!-- <template v-slot:prepend>
@@ -115,6 +117,14 @@ const init = async () => {
   // margin-top: 2rem;
   // display: grid;
   // place-items: center;
+}
+
+.card {
+  // padding: 0.5rem;
+}
+
+.card-img {
+  // border-radius: 10px;
 }
 
 .card-tags {

@@ -9,21 +9,43 @@
       </section>
 
       <section class="feature-area">
-        <div class="feature-item">
-          <img class="feature-img" src="/images/samples/006.jpg" alt="Feature 1">
-          <h3>Site Module</h3>
-          <p>You can record the link of any website or application, your account and even password (if you want), and make notes on the website to avoid forgetting, support click to jump.</p>
+        <h2>Our Amazing Features</h2>
+        <div class="feature-content">
+          <div class="feature-item">
+            <img class="feature-img" src="/images/samples/006.jpg" alt="Feature 1">
+            <h3>Site Module</h3>
+            <p>Record the link of any website or application, account and even password (if you want), and make notes on the website to avoid forgetting, support click to jump.</p>
+          </div>
+          <div class="feature-item">
+            <img class="feature-img" src="/images/samples/007.jpg" alt="Feature 2">
+            <h3>Note Module</h3>
+            <p>Use the sticky note function to record any text type of content, including but not limited to memos, work logs, etc. Set different levels for sticky notes and distinguish them with obvious colors for easy screening.</p>
+          </div>
+          <div class="feature-item">
+            <img class="feature-img" src="/images/samples/008.jpg" alt="Feature 3">
+            <h3>Blog Module</h3>
+            <p>Write any article, set it to be public or hidden, support Markdown syntax.</p>
+          </div>
         </div>
-        <div class="feature-item">
-          <img class="feature-img" src="/images/samples/007.jpg" alt="Feature 2">
-          <h3>Note Module</h3>
-          <p>You can use the sticky note function to record any text type of content, including but not limited to memos, work logs, etc. You can set different levels for sticky notes and distinguish them with obvious colors for easy screening.</p>
+      </section>
+
+      <section class="testimonial-area">
+        <h2>What Our Users Say</h2>
+        <div class="testimonial-content">
+          <div class="testimonial-card">
+            <p>"This website has changed the way I work. It's a game-changer!"</p>
+            <p>- John Doe</p>
+          </div>
+          <div class="testimonial-card">
+            <p>"Simple, effective, and reliable. I highly recommend it!"</p>
+            <p>- Jane Smith</p>
+          </div>
         </div>
-        <div class="feature-item">
-          <img class="feature-img" src="/images/samples/008.jpg" alt="Feature 3">
-          <h3>Blog Module</h3>
-          <p>You can write any article, set it to be public or hidden, support Markdown syntax.</p>
-        </div>
+      </section>
+
+      <section class="cta-area">
+        <h2>Explore More Possibilities?</h2>
+        <a href="mailto:karber@foxmail.com" class="cta-btn">Contact Us</a>
       </section>
 
     </div>
@@ -93,18 +115,101 @@
 }
 
 .feature-area {
-  width: 80%;
-  display: flex;
-  justify-content: space-between;
-  margin: 2rem auto;
+  padding: 5rem 2rem;
   text-align: center;
 
-  .feature-item {
-    width: 25%;
+  h2 {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
   }
 
-  .feature-img {
-    width: 100%;
+  .feature-content {
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+  
+    .feature-item {
+      width: 30%;
+      padding: 1rem;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+      h3 {
+        font-size: 1.5rem;
+        margin: 1rem 0;
+      }
+
+      p {
+        font-size: 1rem;
+        color: #7f8c8d;
+      }
+    }
+  
+    .feature-img {
+      width: 100%;
+    }
+  }
+}
+
+.testimonial-area {
+  background: #ecf0f1;
+  padding: 5rem 2rem;
+  text-align: center;
+
+  h2 {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .testimonial-content {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+
+    .testimonial-card {
+      background: var(--pure-color);
+      padding: 2rem;
+      width: 45%;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    p {
+      font-size: 18px;
+      font-style: italic;
+      color: #34495e;
+    }
+  }
+}
+
+.cta-area {
+  text-align: center;
+  padding: 5rem 2rem;
+  background: var(--primary-color);
+  color: #ffffff;
+
+  h2 {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .cta-btn {
+    padding: 0.5rem 1rem;
+    font-size: 1.25rem;
+    font-weight: 500;
+    border-radius: 10px;
+    text-decoration: none;
+    color: #ffffff;
+    box-shadow: 10px 4px 10px rgba(0, 0, 0, 0.2),
+                -10px -4px 10px rgba(255, 255, 255, 1);
+    transition: all 0.2s ease-out;
+
+    &:hover {
+      cursor: pointer;
+      font-size: 1.3rem;
+      box-shadow: 0 0 0 rgba(0, 0, 0, 0.2),
+                  0 0 0 rgba(255, 255, 255, 1),
+                  inset 10px 4px 10px rgba(0, 0, 0, 0.1),
+                  inset -10px -4px 10px rgba(255, 255, 255, 1);
+    }
   }
 }
 

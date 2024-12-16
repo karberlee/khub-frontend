@@ -57,7 +57,7 @@
 
 .count-area {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   gap: 1rem;
   flex-wrap: wrap;
   background-color: #ffffff;

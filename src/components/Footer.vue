@@ -12,7 +12,7 @@
 footer {
   height: 5rem;
   width: 100%;
-  margin-top: 2rem;
+  /* margin-top: 2rem; */
   color: var(--text-color);
   /* background-color: var(--background-color); */
   background-color: var(--pure-color);
