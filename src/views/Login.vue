@@ -83,7 +83,6 @@ export default {
           const res = await this.$post("/auth/login", userInfo)
           store.commit('setGlobalLoading', false)
           if (res.data.code === 0) {
-            localStorage.setItem('userId', res.data.body._id) // 存储用户ID
             router.push("/")
           } else {
             alert(res.data.message)

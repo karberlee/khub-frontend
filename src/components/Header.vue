@@ -149,7 +149,6 @@ const changeTheme = function () {
 // logout
 const logout = function () {
   localStorage.removeItem("token")
-  localStorage.removeItem("userId")
   // window.location.reload()
   router.push('/login')
 }
@@ -167,9 +166,9 @@ onMounted(() => {
 })
 
 const getUserInfo = async () => {
-  const userId = localStorage.getItem('userId')
-  if (userId) {
-    const res = await $get(`/user/${userId}`)
+  const token = localStorage.getItem('token')
+  if (token) {
+    const res = await $get(`/user/reload`)
     store.commit('setUser', res.data.body)
   }
 }
