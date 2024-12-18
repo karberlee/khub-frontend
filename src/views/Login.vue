@@ -31,18 +31,24 @@
       </v-col>
       <div class="button" @click="login">Login</div>
       <div class="signup-notice">Do not have an account? <a href="/signup">Create an account</a></div>
+      <div class="sso-row">
+        <div>SSO Login:</div>
+        <button @click="githubLogin"><v-icon color="#1f2328" size="large" icon="mdi-github"></v-icon></button>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { ref, reactive, computed, onMounted } from "vue"
+import { ref, reactive, computed, onMounted, getCurrentInstance } from "vue"
 import { useStore } from "vuex"
 import { useRouter } from "vue-router"
 
 export default {
   name: "Login",
   setup() {
+    const { appContext } = getCurrentInstance()
+    const { $get } = appContext.config.globalProperties
     const store = useStore()
     const router = useRouter()
 
@@ -90,14 +96,40 @@ export default {
           }
         }
       },
+      async githubLogin() {
+        window.location.href = import.meta.env.VITE_GITHUB_OAUTH_URL
+      },
     }
     
     onMounted(() => {
       const token = localStorage.getItem('token')
       if (token) {
         router.replace("/")
+        return
+      }
+      const code = getCode()
+      if (code) {
+        handleGithubCallback(code)
       }
     })
+
+    const getCode = () => {
+      const urlParams = new URLSearchParams(window.location.search)
+      return urlParams.get('code')
+    }
+
+    const handleGithubCallback = async (code) => {
+      try {
+        const res = await $get(`${import.meta.env.VITE_API_URL}/auth/github/callback?code=${code}`)
+        if (res.data.code === 0) {
+          router.replace("/")
+        } else {
+          alert('callback:', res.message)
+        }
+      } catch (error) {
+        alert('handleGithubCallback:', error)
+      }
+    }
 
     return {
       showPwd,
@@ -182,6 +214,14 @@ export default {
     .signup-notice {
       margin: 24px 0;
       text-align: center;
+    }
+
+    .sso-row {
+      // margin: 24px 0;
+      // text-align: center;
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
     }
   }
 }

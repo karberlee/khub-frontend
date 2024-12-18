@@ -27,6 +27,7 @@ export default defineConfig(({ mode }) => {
       }
     },
     server: {
+      host: '0.0.0.0', // 允许所有的网络接口访问
       port: parseInt(env.VITE_PORT || "3000"), // 开发服务器端口
       open: true, // 启动时自动打开浏览器
     },
