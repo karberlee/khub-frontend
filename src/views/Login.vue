@@ -120,14 +120,18 @@ export default {
 
     const handleGithubCallback = async (code) => {
       try {
+        store.commit('setGlobalLoading', true)
         const res = await $get(`${import.meta.env.VITE_API_URL}/auth/github/callback?code=${code}`)
+        store.commit('setGlobalLoading', false)
         if (res.data.code === 0) {
           router.replace("/")
         } else {
-          alert('callback:', res.message)
+          alert('callback:', res.data.message)
         }
       } catch (error) {
-        alert('handleGithubCallback:', error)
+        alert('handleGithubCallback:', error.data.message)
+      } finally {
+        store.commit('setGlobalLoading', false)
       }
     }
 
