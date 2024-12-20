@@ -55,51 +55,47 @@ export const get = (url, query = {}) => {
       url: fullUrl
     })
     .then(res => {
-      resolve(res);
+      resolve(res)
     })
     .catch(response => {
-      errorState(response);
-      reject(response);
+      errorState(response)
+      reject(response)
     })
   })
 }
 
-export const post = (url, body) => {
+export const post = (url, body, headers = { "Content-Type": "application/json" }) => {
   return new Promise((resolve, reject) => {
     http({
       method: "post",
-      url: url,
+      url,
       data: body,
-      headers: {
-        "Content-Type": "application/json"
-      }
+      headers
     })
     .then(res => {
-      resolve(res);
+      resolve(res)
     })
     .catch(response => {
-      errorState(response);
-      reject(response);
+      errorState(response)
+      reject(response)
     })
   })
 }
 
-export const patch = (url, body) => {
+export const patch = (url, body, headers = { "Content-Type": "application/json" }) => {
   return new Promise((resolve, reject) => {
     http({
       method: "patch",
-      url: url,
+      url,
       data: body,
-      headers: {
-        "Content-Type": "application/json"
-      }
+      headers
     })
     .then(res => {
-      resolve(res);
+      resolve(res)
     })
     .catch(response => {
-      errorState(response);
-      reject(response);
+      errorState(response)
+      reject(response)
     })
   })
 }
@@ -111,11 +107,11 @@ export const del = (url) => {
       url: url,
     })
     .then(res => {
-      resolve(res);
+      resolve(res)
     })
     .catch(response => {
-      errorState(response);
-      reject(response);
+      errorState(response)
+      reject(response)
     })
   })
 }
@@ -124,8 +120,8 @@ export const del = (url) => {
 
 function errorState(response) {
   if (response && (response.status === 200 || response.status === 304 || response.status === 400)) {
-    return response;
+    return response
   } else {
-    console.log(response);
+    console.log(response)
   }
 }

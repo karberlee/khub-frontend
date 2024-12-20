@@ -30,7 +30,7 @@
     </div>
     
     <div class="editor-content">
-      <Markdown v-model="blog.content" />
+      <Markdown v-model="blog.content" @onUploadImg="onUploadImg" />
     </div>
   </div>
 </template>
@@ -66,6 +66,21 @@ watch(
     }
   }
 )
+
+const onUploadImg = async (files, callback) => {
+  const res = await Promise.all(
+    files.map((file) => {
+      return new Promise(async (rev, rej) => {
+        const form = new FormData()
+        form.append('file', file)
+        $post("/storage/upload/image", form, { 'Content-Type': 'multipart/form-data' })
+          .then((res) => rev(res))
+          .catch((error) => rej(error))
+      })
+    })
+  )
+  callback(res.map((item) => `${import.meta.env.VITE_API_URL}/public/images/${item.data.body.file}`))
+}
 
 const save = async () => {
   store.commit('setGlobalLoading', true)
