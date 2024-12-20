@@ -9,7 +9,7 @@
           color="blue"
           class="count-card"
         >
-          <div class="count-text">{{ 50 }}</div>
+          <div class="count-text">{{ data.statistics.siteCount }}</div>
           <div class="card-text">Site Count</div>
         </v-card>
         <v-card
@@ -17,7 +17,7 @@
           color="blue"
           class="count-card"
         >
-          <div class="count-text">{{ 20 }}</div>
+          <div class="count-text">{{ data.statistics.noteCount }}</div>
           <div class="card-text">Note Count</div>
         </v-card>
         <v-card
@@ -25,16 +25,16 @@
           color="blue"
           class="count-card"
         >
-          <div class="count-text">{{ 8 }}</div>
-          <div class="card-text">Blog Count</div>
+          <div class="count-text">{{ data.statistics.doc?.publicCount }}</div>
+          <div class="card-text">Public Blog Count</div>
         </v-card>
         <v-card
           hover
           color="blue"
           class="count-card"
         >
-          <div class="count-text">{{ 999 }}</div>
-          <div class="card-text">Total Count</div>
+          <div class="count-text">{{ data.statistics.doc?.totalCount }}</div>
+          <div class="card-text">Total Blog Count</div>
         </v-card>
       </div>
       
@@ -43,7 +43,30 @@
 </template>
 
 <script setup>
+import { ref, reactive, watch, computed, onMounted, getCurrentInstance } from "vue"
+import { useStore } from "vuex"
+const { appContext } = getCurrentInstance()
+const { $get } = appContext.config.globalProperties
 
+const store = useStore()
+
+const data = reactive({
+  statistics: {}
+})
+
+onMounted(() => {
+  init()
+})
+
+const init = async () => {
+  store.commit('setGlobalLoading', true)
+  const res = await $get(`/user/statistics`)
+  console.log('res:', res)
+  if (res.data.code === 0) {
+    data.statistics = res.data.body
+  }
+  store.commit('setGlobalLoading', false)
+}
 </script>
 
 <style lang="scss" scoped>
