@@ -61,7 +61,6 @@ onMounted(() => {
 const init = async () => {
   store.commit('setGlobalLoading', true)
   const res = await $get(`/user/statistics`)
-  console.log('res:', res)
   if (res.data.code === 0) {
     data.statistics = res.data.body
   }

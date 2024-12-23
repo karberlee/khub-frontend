@@ -121,7 +121,8 @@ const init = async () => {
 <style lang="scss" scoped>
 .editor {
   margin-top: 5rem;
-  min-height: calc( 100vh - 12rem );
+  margin-bottom: 1rem;
+  min-height: calc( 100vh - 11rem );
   // display: flex;
   // justify-content: center;
 }
@@ -159,7 +160,7 @@ const init = async () => {
   padding: 0 1rem;
   display: flex;
   flex-direction: row;
-  height: calc( 100vh - 18rem );
+  height: calc( 100vh - 17rem );
   // gap: 20px;
 }
 </style>

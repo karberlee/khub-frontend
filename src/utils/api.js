@@ -33,7 +33,7 @@ http.interceptors.response.use(
   }, 
   function (error) {
     console.log("api response error:", error)
-    const { status } = error.response
+    const status = error.response?.status
     if([401, 403].indexOf(status) > -1 && !window.location.href.endsWith("/login")) {
       localStorage.removeItem("token")
       window.location.href = "/login"
