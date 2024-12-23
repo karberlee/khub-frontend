@@ -18,6 +18,16 @@ app.config.globalProperties.$post = post
 app.config.globalProperties.$patch = patch
 app.config.globalProperties.$delete = del
 
+app.config.errorHandler = (err, vm, info) => {
+  console.error('Vue catch error:', err)
+  console.error('Module instance:', vm)
+  console.error('Error info:', info)
+  
+  // 在这里，您可以将错误发送到远程日志服务器等
+  // 例如：
+  // sendErrorToServer(err, info)
+}
+
 store.dispatch('loadUserFromStorage')
 
 app.mount('#app')
