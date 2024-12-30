@@ -6,7 +6,7 @@
         <Sidebar/>
       </div>
       <div class="main-content">
-        <router-view />
+        <router-view :key="route.path" />
       </div>
     </div>
     <component v-if="showFooter" :is="footerComponent" />

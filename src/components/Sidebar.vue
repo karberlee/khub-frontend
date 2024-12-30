@@ -27,7 +27,8 @@ const menuItems = [
   { name: 'Dashboard', icon: 'mdi-view-dashboard', path: '/manage/dashboard' },
   { name: 'Site', icon: 'mdi-web', path: '/manage/sites' },
   { name: 'Note', icon: 'mdi-note-multiple', path: '/manage/notes' },
-  { name: 'Blog', icon: 'mdi-post', path: '/manage/blog' },
+  { name: 'My Blog', icon: 'mdi-post', path: '/manage/blog/public' },
+  { name: 'Private Blog', icon: 'mdi-post', path: '/manage/blog/private' },
 ]
 
 const tab = ref('Dashboard')

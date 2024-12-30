@@ -2,8 +2,23 @@
   <div class="global-content blog">
     <div class="blog-content">
       <div class="global-title">Blogs Page</div>
-      <v-btn color="success" @click="replaceRouter('/blog/editor')">New</v-btn>
-      <!-- <v-btn color="success" @click="replaceRouter('/blog/editor/')">Edit</v-btn> -->
+
+      <div class="search-row">
+        <v-text-field
+          max-width="50%"
+          clearable
+          v-model="searchText"
+          label="Search"
+          prepend-inner-icon="mdi-magnify"
+          variant="outlined"
+        ></v-text-field>
+        <div class="btn-area">
+          <v-btn color="success" @click="searchBlog">Search</v-btn>
+          <div class="btn-end-area">
+            <v-btn color="success" @click="replaceRouter('/blog/editor')">New</v-btn>
+          </div>
+        </div>
+      </div>
 
       <v-row>
         <v-col
@@ -60,11 +75,19 @@ const { appContext } = getCurrentInstance()
 const { $get, $post, $patch, $delete } = appContext.config.globalProperties
 
 const store = useStore()
+const route = useRoute()
 const router = useRouter()
+
+const searchText = ref("")
 
 const data = reactive({
   blogList: [],
 })
+
+// search blog
+const searchBlog = async () => {
+  await init()
+}
 
 const renderMarkdownToText = (content) => {
   // 使用 marked 将 Markdown 渲染为 HTML，然后再清除 HTML 标签
@@ -92,8 +115,18 @@ onMounted(() => {
 
 // component init, get all blogs
 const init = async () => {
+  const query = { public: true }
+  if (route.path.indexOf('private') > -1) {
+    query.public = false
+  }
+  if (route.path.indexOf('manage') > -1) {
+    query.manage = true
+  }
+  if (searchText.value) {
+    query.search = searchText.value
+  }
   store.commit('setGlobalLoading', true)
-  const res = await $get("/doc")
+  const res = await $get("/doc", query)
   store.commit('setGlobalLoading', false)
   if (res.data.code === 0) {
     data.blogList = res.data.body
@@ -117,6 +150,36 @@ const init = async () => {
   // margin-top: 2rem;
   // display: grid;
   // place-items: center;
+}
+
+.search-row {
+  margin: 1rem 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+
+  .v-text-field {
+    background-color: #ffffff;
+  }
+  
+  .v-text-field :deep(.v-input__details) {
+    display: none;
+  }
+
+  .btn-area {
+    display: flex;
+    justify-content: space-between;
+    flex-grow: 1;
+  }
+
+  .btn-end-area {
+    display: grid;
+    grid-auto-flow: column;
+    place-items: center;
+    gap: 1rem;
+  }
 }
 
 .card {

@@ -145,8 +145,14 @@ const newRoutes = [
     meta: { auth: true }
   },
   {
-    path: '/manage/blog',
-    name: 'ManageBlog',
+    path: '/manage/blog/public',
+    name: 'ManageBlogPublic',
+    component: () => import('@/views/Blog.vue'),
+    meta: { auth: true },
+  },
+  {
+    path: '/manage/blog/private',
+    name: 'ManageBlogPrivate',
     component: () => import('@/views/Blog.vue'),
     meta: { auth: true },
   },
