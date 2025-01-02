@@ -73,13 +73,13 @@ const onUploadImg = async (files, callback) => {
       return new Promise(async (rev, rej) => {
         const form = new FormData()
         form.append('file', file)
-        $post("/storage/upload/image", form, { 'Content-Type': 'multipart/form-data' })
+        $post("/storage/upload/image/blog", form, { 'Content-Type': 'multipart/form-data' })
           .then((res) => rev(res))
           .catch((error) => rej(error))
       })
     })
   )
-  callback(res.map((item) => `${import.meta.env.VITE_API_URL}/public/images/${item.data.body.file}`))
+  callback(res.map((item) => `${import.meta.env.VITE_API_URL}/${item.data.body.path}/${item.data.body.file}`))
 }
 
 const save = async () => {
