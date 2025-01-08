@@ -32,6 +32,9 @@ import {
   VDivider,
   VTabs,
   VTab,
+  VTabsWindow,
+  VTabsWindowItem,
+  VFileInput,
 } from 'vuetify/components'
 
 const vuetify = createVuetify({
@@ -66,6 +69,9 @@ const vuetify = createVuetify({
     VDivider,
     VTabs,
     VTab,
+    VTabsWindow,
+    VTabsWindowItem,
+    VFileInput,
   },
 })
 
