@@ -71,7 +71,7 @@
           </v-card-item>
           <v-divider></v-divider>
           <div class="btn-area">
-            <v-btn color="success" variant="plain" @click="replaceRouter('/manage/sites')">Dashboard</v-btn>
+            <v-btn color="success" variant="plain" @click="replaceRouter('/manage/setting')">Setting</v-btn>
             <v-btn color="success" variant="plain" @click="logout">Logout</v-btn>
           </div>
         </v-card>

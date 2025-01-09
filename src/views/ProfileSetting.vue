@@ -1,44 +1,43 @@
 <template>
   <div class="profile-setting">
-    <!-- <v-row>
-      <v-col cols="12" md="6"> -->
-        <!-- 图片预览 -->
-        <div class="profile-avatar">
-          <Avatar :image="avatarUrl" :name="user.name" size="6rem"
-            :altText="user.name + ' Avatar'" />
-        </div>
+    <!-- 图片预览 -->
+    <div class="profile-avatar">
+      <div>Avatar:</div>
+      <Avatar :image="avatarUrl" :name="user.name" size="6rem"
+        :altText="user.name + ' Avatar'" />
+    </div>
 
-        <!-- 文件上传输入框 -->
-        <v-file-input
-          v-model="file"
-          label="选择图片"
-          accept="image/*"
-          variant="solo"
-          :prepend-icon="null"
-          prepend-inner-icon="mdi-camera"
-          class="avatar-upload"
-          :rules="[validateFile]"
-          @change="previewImage"
-          @click:clear="previewImage"
-        ></v-file-input>
+    <!-- 文件上传输入框 -->
+    <v-file-input
+      v-model="file"
+      label="Upload Avatar"
+      accept="image/*"
+      variant="solo"
+      :prepend-icon="null"
+      prepend-inner-icon="mdi-camera"
+      class="avatar-upload"
+      :rules="[validateFile]"
+      @change="previewImage"
+      @click:clear="previewImage"
+    ></v-file-input>
 
-        <!-- 显示上传的文件名 -->
-        <!-- <v-text-field
-          v-if="file"
-          v-model="fileName"
-          label="上传的文件"
-          readonly
-          outlined
-          class="mt-2"
-        ></v-text-field> -->
-      <!-- </v-col>
-    </v-row> -->
+    <v-text-field
+      variant="outlined"
+      v-model="user.name"
+      label="Name"
+      width="50%"
+    ></v-text-field>
+
+    <v-btn color="success" @click="saveProfile">Save</v-btn>
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from "vue"
+import { ref, reactive, computed, onMounted, getCurrentInstance } from "vue"
 import { useStore } from "vuex"
+const { appContext } = getCurrentInstance()
+const { $get, $post, $patch, $delete } = appContext.config.globalProperties
+import { uploadImage } from "@/utils/common"
 import Avatar from "@/components/Avater.vue"
 
 const store = useStore()
@@ -46,10 +45,11 @@ const store = useStore()
 const file = ref(null)
 const fileName = ref('')
 const imageUrl = ref(null)
+const user = reactive({})
 
-const user = computed(() => {
-  return store.state.user
-})
+// const user = computed(() => {
+//   return store.state.user
+// })
 
 const avatarUrl = computed(() => {
   if (imageUrl.value) {
@@ -83,19 +83,46 @@ const previewImage = () => {
   reader.readAsDataURL(file.value)
   fileName.value = file.value.name
 }
+
+const saveProfile = async () => {
+  const params = {}
+  params.name = user.name
+  store.commit('setGlobalLoading', true)
+  const res = await uploadImage(file.value, 'avatar')
+  params.avatar = `${res.data.body.path}/${res.data.body.file}`
+  await $patch(`/user/${user._id}`, params)
+  await getUserInfo()
+  store.commit('setGlobalLoading', false)
+}
+
+onMounted(() => {
+  getUserInfo()
+})
+
+const getUserInfo = async () => {
+  store.commit('setGlobalLoading', true)
+  const res = await $get(`/user/reload`)
+  Object.assign(user, res.data.body)
+  store.commit('setUser', res.data.body)
+  store.commit('setGlobalLoading', false)
+}
 </script>
 
 <style lang="scss" scoped>
 .profile-setting {
   width: 100%;
+  margin: 1rem;
 }
 
 .profile-avatar {
-  margin: 1rem;
+  margin: 1rem 0;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
 .avatar-upload {
-  margin: 1rem;
-  width: 50%;
+  margin: 1rem 0;
+  width: 16rem;
 }
 </style>

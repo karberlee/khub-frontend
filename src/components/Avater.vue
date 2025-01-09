@@ -1,6 +1,6 @@
 <template>
   <div class="avatar" :style="{ width: size, height: size, 'background-color': color }">
-    <img v-if="image" :src="image" :alt="altText" class="avatar-image" />
+    <img v-if="image" :src="fullImage" :alt="altText" class="avatar-image"/>
     <div v-else class="avatar-placeholder">{{ initials }}</div>
   </div>
 </template>
@@ -24,6 +24,12 @@ const props = defineProps({
     type: Boolean,
     default: false
   },
+})
+
+const fullImage = computed(() => {
+  if (!props.image) return ''
+  if (props.image.startsWith('public')) return `${import.meta.env.VITE_API_URL}/${props.image}`
+  return props.image
 })
 
 // Computed properties
@@ -63,7 +69,7 @@ const generateColor = (str) => {
 
 <style scoped>
 .avatar {
-  display: flex;
+  display: flex !important;
   align-items: center;
   justify-content: center;
   border-radius: 50%;

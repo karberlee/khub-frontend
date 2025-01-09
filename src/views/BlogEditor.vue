@@ -42,6 +42,7 @@ import { useRouter, useRoute } from "vue-router"
 import Markdown from '@/components/Markdown.vue'
 const { appContext } = getCurrentInstance()
 const { $get, $post, $patch, $delete } = appContext.config.globalProperties
+import { uploadImage } from "@/utils/common"
 
 const store = useStore()
 const route = useRoute()
@@ -70,13 +71,7 @@ watch(
 const onUploadImg = async (files, callback) => {
   const res = await Promise.all(
     files.map((file) => {
-      return new Promise(async (rev, rej) => {
-        const form = new FormData()
-        form.append('file', file)
-        $post("/storage/upload/image/blog", form, { 'Content-Type': 'multipart/form-data' })
-          .then((res) => rev(res))
-          .catch((error) => rej(error))
-      })
+      return uploadImage(file, 'blog')
     })
   )
   callback(res.map((item) => `${import.meta.env.VITE_API_URL}/${item.data.body.path}/${item.data.body.file}`))
