@@ -6,6 +6,10 @@ import { createStore } from 'vuex'
 const state = {
   user: {},
   globalLoading: false,
+  globalSnackbar: {
+    visible: false,
+    message: '',
+  },
 }
 
 const mutations = {
@@ -14,6 +18,9 @@ const mutations = {
   },
   setGlobalLoading(state, value) {
     state.globalLoading = value
+  },
+  setGlobalSnackbar(state, value) {
+    state.globalSnackbar = value
   },
 }
 

@@ -1,5 +1,6 @@
 <template>
   <Loading />
+  <Snackbar />
   <!-- <component v-if="showHeaderFooter" :is="headerComponent" /> -->
   <!-- <router-view /> -->
   <!-- <component v-if="showHeaderFooter" :is="footerComponent" /> -->
@@ -10,6 +11,7 @@
 import { computed, defineAsyncComponent } from 'vue'
 import { RouterView, useRoute } from 'vue-router'
 import Loading from '@/components/Loading.vue'
+import Snackbar from '@/components/Snackbar.vue'
 import Layout from './views/Layout.vue'
 
 // 通过动态导入来避免不必要的组件加载

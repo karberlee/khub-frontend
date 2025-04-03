@@ -18,10 +18,20 @@ app.config.globalProperties.$post = post
 app.config.globalProperties.$patch = patch
 app.config.globalProperties.$delete = del
 
-app.config.errorHandler = (err, vm, info) => {
+app.config.errorHandler = (err: any, vm: any, info: string) => {
   console.error('Vue catch error:', err)
-  console.error('Module instance:', vm)
-  console.error('Error info:', info)
+  const snackbarObj = {
+    visible: true,
+    message: `Error: ${err.data.message}`,
+  }
+  store.commit('setGlobalLoading', false)
+  store.commit('setGlobalSnackbar', snackbarObj)
+  setTimeout(() => {
+    store.commit('setGlobalSnackbar', {
+      visible: false,
+      message: '',
+    })
+  }, 3000); // 3 秒后自动关闭
   
   // 在这里，您可以将错误发送到远程日志服务器等
   // 例如：

@@ -35,6 +35,8 @@ import {
   VTabsWindow,
   VTabsWindowItem,
   VFileInput,
+  VSwitch,
+  VSnackbar,
 } from 'vuetify/components'
 
 const vuetify = createVuetify({
@@ -72,6 +74,8 @@ const vuetify = createVuetify({
     VTabsWindow,
     VTabsWindowItem,
     VFileInput,
+    VSwitch,
+    VSnackbar,
   },
 })
 

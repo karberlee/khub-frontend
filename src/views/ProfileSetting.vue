@@ -111,7 +111,7 @@ const getUserInfo = async () => {
 <style lang="scss" scoped>
 .profile-setting {
   width: 100%;
-  margin: 1rem;
+  padding: 1rem;
 }
 
 .profile-avatar {

@@ -18,6 +18,7 @@
             direction="vertical"
           >
             <v-tab prepend-icon="mdi-account" text="Profile" value="Profile"></v-tab>
+            <v-tab prepend-icon="mdi-office-building" text="Workspace" value="Workspace"></v-tab>
             <v-tab prepend-icon="mdi-lock" text="Password" value="Password"></v-tab>
             <v-tab prepend-icon="mdi-bell-cog" text="Notification" value="Notification"></v-tab>
           </v-tabs>
@@ -28,6 +29,14 @@
             <v-card flat>
               <div class="card-content">
                 <ProfileSetting />
+              </div>
+            </v-card>
+          </v-tabs-window-item>
+
+          <v-tabs-window-item value="Workspace">
+            <v-card flat>
+              <div class="card-content">
+                <WorkspaceSetting />
               </div>
             </v-card>
           </v-tabs-window-item>
@@ -53,6 +62,7 @@
 <script setup>
 import { ref } from "vue"
 import ProfileSetting from '@/views/ProfileSetting.vue'
+import WorkspaceSetting from '@/views/WorkspaceSetting.vue'
 
 const tab = ref('Profile')
 </script>
@@ -81,11 +91,15 @@ const tab = ref('Profile')
   .tab-area {
     width: fit-content;
     padding: 0.5rem;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px #bfbfbf;
   }
 
   .content-area {
     flex: 1;
-
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px #bfbfbf;
+    
     .card-content {
       height: calc( 100vh - 15rem );
       padding: 1rem;
