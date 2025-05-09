@@ -157,6 +157,12 @@ const newRoutes = [
     meta: { auth: true },
   },
   {
+    path: '/manage/assets',
+    name: 'Assets',
+    component: () => import('@/views/Assets.vue'),
+    meta: { auth: true }
+  },
+  {
     path: '/manage/setting',
     name: 'Setting',
     component: () => import('@/views/Setting.vue'),
