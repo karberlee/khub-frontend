@@ -23,6 +23,7 @@ app.config.errorHandler = (err: any, vm: any, info: string) => {
   const snackbarObj = {
     visible: true,
     message: `Error: ${err.data.message}`,
+    detail: `Detail: ${err.data.detail}`,
   }
   store.commit('setGlobalLoading', false)
   store.commit('setGlobalSnackbar', snackbarObj)
@@ -30,6 +31,7 @@ app.config.errorHandler = (err: any, vm: any, info: string) => {
     store.commit('setGlobalSnackbar', {
       visible: false,
       message: '',
+      detail: [],
     })
   }, 3000); // 3 秒后自动关闭
   

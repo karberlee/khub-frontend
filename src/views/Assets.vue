@@ -28,9 +28,294 @@
         </div>
       </div>
 
-      <div>
-        <div v-for="asset in data.assetList">{{ asset }}</div>
+      <div class="assets-area">
+        <div v-for="asset in data.assetList" :class="`asset-item ${data.bgColorMapping[asset.status]}`" @click="showAssetDetail(asset)">
+          <div class="thumbnail">
+            <v-img
+              height="8rem"
+              width="14rem"
+              :src="`/images/samples/001.jpg`"
+              cover
+              class="thumbnail-img"
+            ></v-img>
+          </div>
+          <div class="asset-column">{{ asset.name }}</div>
+          <div class="asset-column">{{ asset.price }}</div>
+          <div class="asset-column">{{ asset.category }}</div>
+          <div class="asset-column">{{ data.statusMapping[asset.status] }}</div>
+          <!-- <div class="asset-column">{{ asset.comment }}</div> -->
+          <div class="asset-column">{{ getLocalTime(asset.obtainDate) }}</div>
+        </div>
       </div>
+
+      <v-dialog
+        v-model="detailDialog"
+        max-width="70rem"
+        max-height="60vh"
+      >
+        <v-card>
+          <v-card-title>
+            <span class="text-h5">Asset Detail</span>
+          </v-card-title>
+
+          <v-card-text>
+            <v-container>
+              <v-row>
+                <v-col
+                  cols="12"
+                  md="6"
+                  sm="12"
+                >
+                  <v-text-field
+                    variant="outlined"
+                    v-model="data.currentAssetItem.name"
+                    label="Name"
+                    disabled
+                  ></v-text-field>
+                </v-col>
+                <v-col
+                  cols="12"
+                  md="6"
+                  sm="12"
+                >
+                  <v-text-field
+                    variant="outlined"
+                    v-model.number="data.currentAssetItem.price"
+                    label="Price"
+                    disabled
+                  ></v-text-field>
+                </v-col>
+                <v-col
+                  cols="12"
+                  md="6"
+                  sm="12"
+                >
+                  <v-text-field
+                    variant="outlined"
+                    v-model="data.currentAssetItem.obtainDate"
+                    label="Obtain Date"
+                    disabled
+                  ></v-text-field>
+                </v-col>
+                <v-col
+                  cols="12"
+                  md="6"
+                  sm="12"
+                >
+                  <v-text-field
+                    variant="outlined"
+                    v-model="data.currentAssetItem.obtainWay"
+                    label="Obtain Way"
+                    disabled
+                  ></v-text-field>
+                </v-col>
+                <v-col
+                  cols="12"
+                  md="6"
+                  sm="12"
+                >
+                  <v-text-field
+                    variant="outlined"
+                    v-model="data.currentAssetItem.category"
+                    label="Category"
+                    disabled
+                  ></v-text-field>
+                </v-col>
+                <v-col
+                  cols="12"
+                  md="6"
+                  sm="12"
+                >
+                  <v-select
+                    v-model="data.currentAssetItem.status"
+                    label="Status"
+                    :items="data.statusSelect"
+                    variant="outlined"
+                    disabled
+                  ></v-select>
+                </v-col>
+                <v-col cols="12">
+                  <v-text-field
+                    variant="outlined"
+                    v-model="data.currentAssetItem.thumbnail"
+                    label="Thumbnail"
+                    disabled
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12">
+                  <v-text-field
+                    variant="outlined"
+                    v-model="data.currentAssetItem.images"
+                    label="Images"
+                    disabled
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12">
+                  <v-textarea
+                    variant="outlined"
+                    v-model="data.currentAssetItem.comment"
+                    label="Comment"
+                    rows="20"
+                    disabled
+                  ></v-textarea>
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-card-text>
+
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+              color="blue-darken-1"
+              variant="tonal"
+              @click="closeAssetDetail"
+            >
+              Close
+            </v-btn>
+            <v-btn
+              color="blue-darken-1"
+              variant="elevated"
+              @click="editAsset"
+            >
+              Edit
+            </v-btn>
+            <v-btn
+              v-if="data.currentAssetItem._id"
+              color="error"
+              variant="elevated"
+              @click="deleteNote"
+            >
+              Delete
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
+      <v-dialog
+        v-model="editDialog"
+        max-width="50rem"
+        max-height="80vh"
+      >
+        <v-card>
+          <v-card-title>
+            <span class="text-h5">{{ formTitle }}</span>
+          </v-card-title>
+
+          <v-card-text>
+            <v-container>
+              <v-row>
+                <v-col
+                  cols="12"
+                  md="6"
+                  sm="12"
+                >
+                  <v-text-field
+                    variant="outlined"
+                    v-model="data.currentAssetItem.name"
+                    label="Name"
+                  ></v-text-field>
+                </v-col>
+                <v-col
+                  cols="12"
+                  md="6"
+                  sm="12"
+                >
+                  <v-text-field
+                    variant="outlined"
+                    v-model.number="data.currentAssetItem.price"
+                    label="Price"
+                  ></v-text-field>
+                </v-col>
+                <v-col
+                  cols="12"
+                  md="6"
+                  sm="12"
+                >
+                  <v-text-field
+                    variant="outlined"
+                    v-model="data.currentAssetItem.obtainDate"
+                    label="Obtain Date"
+                  ></v-text-field>
+                </v-col>
+                <v-col
+                  cols="12"
+                  md="6"
+                  sm="12"
+                >
+                  <v-text-field
+                    variant="outlined"
+                    v-model="data.currentAssetItem.obtainWay"
+                    label="Obtain Way"
+                  ></v-text-field>
+                </v-col>
+                <v-col
+                  cols="12"
+                  md="6"
+                  sm="12"
+                >
+                  <v-text-field
+                    variant="outlined"
+                    v-model="data.currentAssetItem.category"
+                    label="Category"
+                  ></v-text-field>
+                </v-col>
+                <v-col
+                  cols="12"
+                  md="6"
+                  sm="12"
+                >
+                  <v-select
+                    v-model="data.currentAssetItem.status"
+                    label="Status"
+                    :items="data.statusSelect"
+                    variant="outlined"
+                  ></v-select>
+                </v-col>
+                <v-col cols="12">
+                  <v-text-field
+                    variant="outlined"
+                    v-model="data.currentAssetItem.thumbnail"
+                    label="Thumbnail"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12">
+                  <v-text-field
+                    variant="outlined"
+                    v-model="data.currentAssetItem.images"
+                    label="Images"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12">
+                  <v-textarea
+                    variant="outlined"
+                    v-model="data.currentAssetItem.comment"
+                    label="Comment"
+                    rows="20"
+                  ></v-textarea>
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-card-text>
+
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+              color="blue-darken-1"
+              variant="tonal"
+              @click="close"
+            >
+              Cancel
+            </v-btn>
+            <v-btn
+              color="blue-darken-1"
+              variant="elevated"
+              @click="save"
+            >
+              Save
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
 
     </div>
   </div>
@@ -39,6 +324,7 @@
 <script setup>
 import { ref, reactive, computed, watch, onMounted, getCurrentInstance } from "vue"
 import { useStore } from "vuex"
+import dayjs from 'dayjs'
 const { appContext } = getCurrentInstance()
 const { $get, $post, $patch, $delete } = appContext.config.globalProperties
 
@@ -51,6 +337,13 @@ const data = reactive({
     3: "retired",
     4: "disposed",
     5: "transferred",
+  },
+  bgColorMapping: {
+    1: "bg-green-lighten-1",
+    2: "bg-light-blue-darken-1",
+    3: "bg-yellow-darken-1",
+    4: "bg-deep-orange-lighten-1",
+    5: "bg-grey-darken-1",
   },
   statusSelect: [
     { title: "Operational", value: 1 }, // 正常使用中
@@ -67,41 +360,94 @@ const data = reactive({
     { title: "Disposed", value: 4 }, // 已处理/清除，侧重“处理完毕”
     { title: "Transferred", value: 5 }, // 已转移，被重新分配或转手给他人
   ],
+  workspaceId: localStorage.getItem('workspaceId'),
   assetList: [],
   currentAssetItem: { status: 1 }
 })
 
 const searchText = ref("")
 const searchStatus = ref(0)
+const detailDialog = ref(false)
 const editDialog = ref(false)
 const deleteDialog = ref(false)
 const formTitle = ref("New Asset")
 
 // search asset
 const searchAsset = async () => {
-  // if (searchText.value || searchStatus.value > 0) {
-  //   const query = {
-  //     search: searchText.value || '',
-  //     status: searchStatus.value
-  //   }
-  //   store.commit('setGlobalLoading', true)
-  //   const res = await $get('/asset', query)
-  //   store.commit('setGlobalLoading', false)
-  //   if (res.data.code === 0) {
-  //     data.assetList = res.data.body
-  //   } else {
-  //     alert(res.data.message)
-  //   }
-  // } else {
-  //   await init()
-  // }
+  if (searchText.value || searchStatus.value > 0) {
+    const query = {
+      workspaceId: data.workspaceId,
+      search: searchText.value || '',
+      status: searchStatus.value
+    }
+    store.commit('setGlobalLoading', true)
+    const res = await $get('/asset', query)
+    store.commit('setGlobalLoading', false)
+    if (res.data.code === 0) {
+      data.assetList = res.data.body
+    } else {
+      alert(res.data.message)
+    }
+  } else {
+    await init()
+  }
+}
+
+// show asset detail
+const showAssetDetail = (asset) => {
+  detailDialog.value = true
+  Object.assign(data.currentAssetItem, asset)
+}
+
+// close asset detail
+const closeAssetDetail = () => {
+  detailDialog.value = false
+  close()
 }
 
 // open insert dialog
 const addAsset = () => {
-  // data.currentAssetItem = { status: 1 }
-  // formTitle.value = "New Asset"
-  // editDialog.value = true
+  data.currentAssetItem = { status: 1 }
+  formTitle.value = "New Asset"
+  editDialog.value = true
+}
+
+// open edit dialog
+const editAsset = () => {
+  formTitle.value = "Edit Asset"
+  editDialog.value = true
+}
+
+// save asset, insert or edit
+const save = async () => {
+  store.commit('setGlobalLoading', true)
+  if (data.currentAssetItem._id) {
+    const assetId = data.currentAssetItem._id
+    delete data.currentAssetItem._id
+    delete data.currentAssetItem.__v
+    delete data.currentAssetItem.workspaceId
+    delete data.currentAssetItem.createTime
+    delete data.currentAssetItem.updateTime
+    await $patch(`/asset/${assetId}`, data.currentAssetItem)
+  } else {
+    data.currentAssetItem.workspaceId = data.workspaceId
+    await $post("/asset", data.currentAssetItem)
+  }
+  close()
+  await init()
+}
+
+// close insert or edit dialog
+const close = async () => {
+  editDialog.value = false
+  if (!detailDialog.value) {
+    data.currentAssetItem = { status: 1 }
+    store.commit('setGlobalLoading', false)
+  }
+}
+
+const getLocalTime = (utcTime) => {
+  return dayjs(utcTime).format('YYYY/MM/DD')
 }
 
 onMounted(() => {
@@ -111,7 +457,7 @@ onMounted(() => {
 // component init, get all asset
 const init = async () => {
   store.commit('setGlobalLoading', true)
-  const res = await $get("/asset", { workspaceId: localStorage.getItem('workspaceId') })
+  const res = await $get("/asset", { workspaceId: data.workspaceId })
   store.commit('setGlobalLoading', false)
   if (res.data.code === 0) {
     data.assetList = res.data.body
@@ -127,7 +473,6 @@ const init = async () => {
 }
 
 .assets-content {
-  background-color: pink;
   width: 80%;
   // margin-top: 2rem;
   // display: grid;
@@ -162,5 +507,46 @@ const init = async () => {
     place-items: center;
     gap: 1rem;
   }
+}
+
+.assets-area {
+  width: 100%;
+
+  .asset-item {
+    height: 10rem;
+    margin: 1rem 0;
+    padding: 1rem;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.15);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+                box-shadow 0.3s ease;
+
+    &:hover {
+      transform: translateY(0) scale(1.05) rotate(1deg);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+    }
+
+    .thumbnail {
+      width: fit-content;
+      height: fit-content;
+      
+      .thumbnail-img {
+        border-radius: 5px;
+      }
+    }
+
+    .asset-column {
+      flex: 1;
+      text-align: center;
+      font-weight: 700;
+      color: #ffffff;
+    }
+  }
+  
 }
 </style>

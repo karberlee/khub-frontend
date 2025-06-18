@@ -43,6 +43,7 @@
             hover
             :color="data.colorMapping[note.level]"
             height="20rem"
+            class="note-card"
             @click="editNote(note)"
           >
             <v-card-item>
@@ -334,6 +335,32 @@ const init = async () => {
     grid-auto-flow: column;
     place-items: center;
     gap: 1rem;
+  }
+}
+
+.note-card {
+  transition: transform 0.5s ease, box-shadow 0.3s ease;
+  transform-origin: top left; /* 设置旋转中心为左上角 */
+  
+  &:hover {
+    animation: float-swing-once 1s ease-in-out 0s 1 forwards;
+    box-shadow: 0 12px 24px rgba(0,0,0,0.2);
+    z-index: 1;
+  }
+
+  @keyframes float-swing-once {
+    0% {
+      transform: translateY(-0.5rem) scale(1.05) rotate(0deg);
+    }
+    30% {
+      transform: translateY(-0.5rem) scale(1.05) rotate(12deg);
+    }
+    60% {
+      transform: translateY(-0.5rem) scale(1.05) rotate(6deg);
+    }
+    100% {
+      transform: translateY(-0.5rem) scale(1.05) rotate(9deg);
+    }
   }
 }
 

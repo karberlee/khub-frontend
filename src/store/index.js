@@ -9,6 +9,7 @@ const state = {
   globalSnackbar: {
     visible: false,
     message: '',
+    detail: []
   },
 }
 

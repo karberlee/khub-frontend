@@ -1,7 +1,8 @@
 <template>
   <div>
     <v-snackbar v-model="globalSnackbar.visible" color="error">
-      {{ globalSnackbar.message }}
+      <div>{{ globalSnackbar.message }}</div>
+      <div>{{ globalSnackbar.detail }}</div>
     </v-snackbar>
   </div>
 </template>
