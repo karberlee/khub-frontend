@@ -98,7 +98,7 @@ const init = async () => {
 const loadWorkspaceList = async () => {
   const res = await $get('/workspace')
   data.workspaceList = res.data.body.filter(item => item.active)
-  const localStorageWorkspaceId =  localStorage.getItem('workspaceId')
+  const localStorageWorkspaceId = localStorage.getItem('workspaceId')
   if (localStorageWorkspaceId && data.workspaceList.map(item => item._id).includes(localStorageWorkspaceId)) {
     // 当浏览器本地存储中存在workspaceId且该workspaceId有效，将其设为当前workspaceId
     data.currentWorkspaceId = localStorageWorkspaceId

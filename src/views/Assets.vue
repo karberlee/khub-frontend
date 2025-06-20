@@ -52,6 +52,7 @@
         v-model="detailDialog"
         max-width="70rem"
         max-height="60vh"
+        @click:outside="closeAssetDetail"
       >
         <v-card>
           <v-card-title>
@@ -183,7 +184,7 @@
               v-if="data.currentAssetItem._id"
               color="error"
               variant="elevated"
-              @click="deleteNote"
+              @click="deleteAsset"
             >
               Delete
             </v-btn>
@@ -195,6 +196,7 @@
         v-model="editDialog"
         max-width="50rem"
         max-height="80vh"
+        @click:outside="closeAssetEdit"
       >
         <v-card>
           <v-card-title>
@@ -211,7 +213,7 @@
                 >
                   <v-text-field
                     variant="outlined"
-                    v-model="data.currentAssetItem.name"
+                    v-model="data.currentEditAsset.name"
                     label="Name"
                   ></v-text-field>
                 </v-col>
@@ -222,7 +224,7 @@
                 >
                   <v-text-field
                     variant="outlined"
-                    v-model.number="data.currentAssetItem.price"
+                    v-model.number="data.currentEditAsset.price"
                     label="Price"
                   ></v-text-field>
                 </v-col>
@@ -233,7 +235,7 @@
                 >
                   <v-text-field
                     variant="outlined"
-                    v-model="data.currentAssetItem.obtainDate"
+                    v-model="data.currentEditAsset.obtainDate"
                     label="Obtain Date"
                   ></v-text-field>
                 </v-col>
@@ -244,7 +246,7 @@
                 >
                   <v-text-field
                     variant="outlined"
-                    v-model="data.currentAssetItem.obtainWay"
+                    v-model="data.currentEditAsset.obtainWay"
                     label="Obtain Way"
                   ></v-text-field>
                 </v-col>
@@ -255,7 +257,7 @@
                 >
                   <v-text-field
                     variant="outlined"
-                    v-model="data.currentAssetItem.category"
+                    v-model="data.currentEditAsset.category"
                     label="Category"
                   ></v-text-field>
                 </v-col>
@@ -265,7 +267,7 @@
                   sm="12"
                 >
                   <v-select
-                    v-model="data.currentAssetItem.status"
+                    v-model="data.currentEditAsset.status"
                     label="Status"
                     :items="data.statusSelect"
                     variant="outlined"
@@ -274,21 +276,21 @@
                 <v-col cols="12">
                   <v-text-field
                     variant="outlined"
-                    v-model="data.currentAssetItem.thumbnail"
+                    v-model="data.currentEditAsset.thumbnail"
                     label="Thumbnail"
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12">
                   <v-text-field
                     variant="outlined"
-                    v-model="data.currentAssetItem.images"
+                    v-model="data.currentEditAsset.images"
                     label="Images"
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12">
                   <v-textarea
                     variant="outlined"
-                    v-model="data.currentAssetItem.comment"
+                    v-model="data.currentEditAsset.comment"
                     label="Comment"
                     rows="20"
                   ></v-textarea>
@@ -302,7 +304,7 @@
             <v-btn
               color="blue-darken-1"
               variant="tonal"
-              @click="close"
+              @click="closeAssetEdit"
             >
               Cancel
             </v-btn>
@@ -313,6 +315,18 @@
             >
               Save
             </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
+      <v-dialog v-model="deleteDialog" max-width="50rem">
+        <v-card>
+          <v-card-title class="text-h5">Are you sure you want to delete this item?</v-card-title>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue-darken-1" variant="tonal" @click="deleteCancel">Cancel</v-btn>
+            <v-btn color="error" variant="elevated" @click="deleteConfirm">OK</v-btn>
+            <v-spacer></v-spacer>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -362,7 +376,8 @@ const data = reactive({
   ],
   workspaceId: localStorage.getItem('workspaceId'),
   assetList: [],
-  currentAssetItem: { status: 1 }
+  currentAssetItem: { status: 1 },
+  currentEditAsset: { status: 1 },
 })
 
 const searchText = ref("")
@@ -402,18 +417,19 @@ const showAssetDetail = (asset) => {
 // close asset detail
 const closeAssetDetail = () => {
   detailDialog.value = false
-  close()
+  data.currentAssetItem = { status: 1 }
 }
 
 // open insert dialog
 const addAsset = () => {
-  data.currentAssetItem = { status: 1 }
+  data.currentEditAsset = { status: 1 }
   formTitle.value = "New Asset"
   editDialog.value = true
 }
 
 // open edit dialog
 const editAsset = () => {
+  data.currentEditAsset = Object.assign({}, data.currentAssetItem)
   formTitle.value = "Edit Asset"
   editDialog.value = true
 }
@@ -421,29 +437,47 @@ const editAsset = () => {
 // save asset, insert or edit
 const save = async () => {
   store.commit('setGlobalLoading', true)
-  if (data.currentAssetItem._id) {
-    const assetId = data.currentAssetItem._id
-    delete data.currentAssetItem._id
-    delete data.currentAssetItem.__v
-    delete data.currentAssetItem.workspaceId
-    delete data.currentAssetItem.createTime
-    delete data.currentAssetItem.updateTime
-    await $patch(`/asset/${assetId}`, data.currentAssetItem)
+  if (data.currentEditAsset._id) {
+    let asset = Object.assign({}, data.currentEditAsset)
+    delete asset._id
+    delete asset.__v
+    delete asset.workspaceId
+    delete asset.createTime
+    delete asset.updateTime
+    await $patch(`/asset/${data.currentEditAsset._id}`, asset)
   } else {
-    data.currentAssetItem.workspaceId = data.workspaceId
-    await $post("/asset", data.currentAssetItem)
+    data.currentEditAsset.workspaceId = data.workspaceId
+    await $post("/asset", data.currentEditAsset)
   }
-  close()
+  closeAssetEdit()
+  closeAssetDetail()
   await init()
 }
 
 // close insert or edit dialog
-const close = async () => {
+const closeAssetEdit = async () => {
   editDialog.value = false
-  if (!detailDialog.value) {
-    data.currentAssetItem = { status: 1 }
-    store.commit('setGlobalLoading', false)
-  }
+  data.currentEditAsset = { status: 1 }
+}
+
+// open delete comfirm dialog
+const deleteAsset = () => {
+  deleteDialog.value = true
+}
+
+// cancel delete
+const deleteCancel = () => {
+  deleteDialog.value = false
+}
+
+// confirm delete
+const deleteConfirm = async () => {
+  store.commit('setGlobalLoading', true)
+  await $delete(`/asset/${data.currentAssetItem._id}`)
+  store.commit('setGlobalLoading', false)
+  deleteCancel()
+  closeAssetDetail()
+  await init()
 }
 
 const getLocalTime = (utcTime) => {
