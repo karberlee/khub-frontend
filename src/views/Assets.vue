@@ -29,15 +29,24 @@
       </div>
 
       <div class="assets-area">
-        <div v-for="asset in data.assetList" :class="`asset-item ${data.bgColorMapping[asset.status]}`" @click="showAssetDetail(asset)">
+        <div v-for="asset in data.assetList" :key="asset._id" :class="`asset-item ${data.bgColorMapping[asset.status]}`" @click="showAssetDetail(asset)">
           <div class="thumbnail">
             <v-img
               height="8rem"
               width="14rem"
-              :src="`/images/samples/001.jpg`"
+              :src="baseUrl + '/' + asset.thumbnail"
               cover
               class="thumbnail-img"
-            ></v-img>
+            >
+              <template v-slot:error>
+                <v-img
+                  height="8rem"
+                  max-width="14rem"
+                  src="/src/assets/images/panda.png"
+                  cover
+                ></v-img>
+              </template>
+            </v-img>
           </div>
           <div class="asset-column">{{ asset.name }}</div>
           <div class="asset-column">{{ asset.price }}</div>
@@ -50,118 +59,108 @@
 
       <v-dialog
         v-model="detailDialog"
-        max-width="70rem"
-        max-height="60vh"
+        width="80vw"
+        max-width="100rem"
+        max-height="90vh"
+        class="detail-dialog"
         @click:outside="closeAssetDetail"
       >
-        <v-card>
+        <v-card class="pa-4">
           <v-card-title>
             <span class="text-h5">Asset Detail</span>
           </v-card-title>
 
           <v-card-text>
-            <v-container>
-              <v-row>
-                <v-col
-                  cols="12"
-                  md="6"
-                  sm="12"
+            <div class="detail-grid">
+              <!-- 左侧区域 -->
+              <div class="left-side">
+                <v-img
+                  height="18rem"
+                  max-width="100%"
+                  :src="baseUrl + '/' + data.currentAssetItem.thumbnail"
+                  cover
+                  class="mb-4"
                 >
-                  <v-text-field
-                    variant="outlined"
-                    v-model="data.currentAssetItem.name"
-                    label="Name"
-                    disabled
-                  ></v-text-field>
-                </v-col>
-                <v-col
-                  cols="12"
-                  md="6"
-                  sm="12"
-                >
-                  <v-text-field
-                    variant="outlined"
-                    v-model.number="data.currentAssetItem.price"
-                    label="Price"
-                    disabled
-                  ></v-text-field>
-                </v-col>
-                <v-col
-                  cols="12"
-                  md="6"
-                  sm="12"
-                >
-                  <v-text-field
-                    variant="outlined"
-                    v-model="data.currentAssetItem.obtainDate"
-                    label="Obtain Date"
-                    disabled
-                  ></v-text-field>
-                </v-col>
-                <v-col
-                  cols="12"
-                  md="6"
-                  sm="12"
-                >
-                  <v-text-field
-                    variant="outlined"
-                    v-model="data.currentAssetItem.obtainWay"
-                    label="Obtain Way"
-                    disabled
-                  ></v-text-field>
-                </v-col>
-                <v-col
-                  cols="12"
-                  md="6"
-                  sm="12"
-                >
-                  <v-text-field
-                    variant="outlined"
-                    v-model="data.currentAssetItem.category"
-                    label="Category"
-                    disabled
-                  ></v-text-field>
-                </v-col>
-                <v-col
-                  cols="12"
-                  md="6"
-                  sm="12"
-                >
-                  <v-select
-                    v-model="data.currentAssetItem.status"
-                    label="Status"
-                    :items="data.statusSelect"
-                    variant="outlined"
-                    disabled
-                  ></v-select>
-                </v-col>
-                <v-col cols="12">
-                  <v-text-field
-                    variant="outlined"
-                    v-model="data.currentAssetItem.thumbnail"
-                    label="Thumbnail"
-                    disabled
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12">
-                  <v-text-field
-                    variant="outlined"
-                    v-model="data.currentAssetItem.images"
-                    label="Images"
-                    disabled
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12">
-                  <v-textarea
-                    variant="outlined"
-                    v-model="data.currentAssetItem.comment"
-                    label="Comment"
-                    rows="20"
-                    disabled
-                  ></v-textarea>
-                </v-col>
-              </v-row>
-            </v-container>
+                  <template v-slot:error>
+                    <v-img
+                      class="mb-4"
+                      height="18rem"
+                      max-width="100%"
+                      src="/src/assets/images/panda.png"
+                      cover
+                    ></v-img>
+                  </template>
+                </v-img>
+
+                <div class="readonly-field">
+                  <label class="readonly-label">Status</label>
+                  <div class="readonly-value">{{ data.currentAssetItem.status }}</div>
+                </div>
+
+                <div class="readonly-field">
+                  <label class="readonly-label">Category</label>
+                  <div class="readonly-value">{{ data.currentAssetItem.category }}</div>
+                </div>
+              </div>
+
+              <!-- 中间竖线 -->
+              <div class="divider"></div>
+
+              <!-- 右侧区域 -->
+              <div class="right-side">
+                <v-row>
+                  <v-col cols="12">
+                    <v-carousel height="30rem" show-arrows="hover">
+                      <v-carousel-item
+                        v-for="(img, i) in data.currentAssetItem.images"
+                        :key="i"
+                      >
+                        <v-img :src="baseUrl + '/' + img" cover height="30rem" />
+                      </v-carousel-item>
+                    </v-carousel>
+                  </v-col>
+
+                  <v-divider class="ma-4" />
+
+                  <v-col cols="12" sm="6">
+                    <div class="readonly-field">
+                      <label class="readonly-label">Name</label>
+                      <div class="readonly-value">{{ data.currentAssetItem.name }}</div>
+                    </div>
+                  </v-col>
+
+                  <v-col cols="12" sm="6">
+                    <div class="readonly-field">
+                      <label class="readonly-label">Price</label>
+                      <div class="readonly-value">{{ data.currentAssetItem.price }}</div>
+                    </div>
+                  </v-col>
+
+                  <v-col cols="12" sm="6">
+                    <div class="readonly-field">
+                      <label class="readonly-label">Obtain Date</label>
+                      <div class="readonly-value">{{ data.currentAssetItem.obtainDate }}</div>
+                    </div>
+                  </v-col>
+
+                  <v-col cols="12" sm="6">
+                    <div class="readonly-field">
+                      <label class="readonly-label">Obtain Way</label>
+                      <div class="readonly-value">{{ data.currentAssetItem.obtainWay }}</div>
+                    </div>
+                  </v-col>
+
+                  <v-col cols="12">
+                    <div class="readonly-field">
+                      <label class="readonly-label">Comment</label>
+                      <div class="readonly-value">
+                        <pre>{{ data.currentAssetItem.comment }}</pre>
+                      </div>
+                    </div>
+                  </v-col>
+                </v-row>
+              </div>
+            </div>
           </v-card-text>
 
           <v-card-actions>
@@ -195,10 +194,11 @@
       <v-dialog
         v-model="editDialog"
         max-width="50rem"
-        max-height="80vh"
+        max-height="90vh"
+        class="edit-dialog"
         @click:outside="closeAssetEdit"
       >
-        <v-card>
+        <v-card class="pa-4">
           <v-card-title>
             <span class="text-h5">{{ formTitle }}</span>
           </v-card-title>
@@ -274,18 +274,26 @@
                   ></v-select>
                 </v-col>
                 <v-col cols="12">
-                  <v-text-field
-                    variant="outlined"
-                    v-model="data.currentEditAsset.thumbnail"
-                    label="Thumbnail"
-                  ></v-text-field>
+                  <div class="edit-upload-image">
+                    <ImageUploader
+                      ref="thumbnailImageUploaderRef"
+                      label="Thumbnail"
+                      resourceType="asset"
+                      :multiple="false"
+                      v-model="data.currentEditAsset.thumbnail"
+                    />
+                  </div>
                 </v-col>
                 <v-col cols="12">
-                  <v-text-field
-                    variant="outlined"
-                    v-model="data.currentEditAsset.images"
-                    label="Images"
-                  ></v-text-field>
+                  <div class="edit-upload-image">
+                    <ImageUploader
+                      ref="imagesImageUploaderRef"
+                      label="Images"
+                      resourceType="asset"
+                      :multiple="true"
+                      v-model="data.currentEditAsset.images"
+                    />
+                  </div>
                 </v-col>
                 <v-col cols="12">
                   <v-textarea
@@ -320,7 +328,7 @@
       </v-dialog>
 
       <v-dialog v-model="deleteDialog" max-width="50rem">
-        <v-card>
+        <v-card class="pa-4">
           <v-card-title class="text-h5">Are you sure you want to delete this item?</v-card-title>
           <v-card-actions>
             <v-spacer></v-spacer>
@@ -341,6 +349,7 @@ import { useStore } from "vuex"
 import dayjs from 'dayjs'
 const { appContext } = getCurrentInstance()
 const { $get, $post, $patch, $delete } = appContext.config.globalProperties
+import ImageUploader from '@/components/ImageUploader.vue'
 
 const store = useStore()
 
@@ -380,12 +389,16 @@ const data = reactive({
   currentEditAsset: { status: 1 },
 })
 
+const baseUrl = import.meta.env.VITE_API_URL
 const searchText = ref("")
 const searchStatus = ref(0)
 const detailDialog = ref(false)
 const editDialog = ref(false)
 const deleteDialog = ref(false)
 const formTitle = ref("New Asset")
+
+const thumbnailImageUploaderRef = ref(null)
+const imagesImageUploaderRef = ref(null)
 
 // search asset
 const searchAsset = async () => {
@@ -437,6 +450,8 @@ const editAsset = () => {
 // save asset, insert or edit
 const save = async () => {
   store.commit('setGlobalLoading', true)
+  await thumbnailImageUploaderRef.value.uploadAll()
+  await imagesImageUploaderRef.value.uploadAll()
   if (data.currentEditAsset._id) {
     let asset = Object.assign({}, data.currentEditAsset)
     delete asset._id
@@ -582,5 +597,63 @@ const init = async () => {
     }
   }
   
+}
+
+.edit-dialog {
+  .edit-upload-image {
+    margin-bottom: 1rem;
+  }
+}
+
+.detail-dialog {
+  .detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1px 2fr; /* 左中右三列 */
+    gap: 1rem;
+    align-items: start;
+  }
+
+  .left-side {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  .right-side {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+
+  .divider {
+    background-color: rgba(0, 0, 0, 0.12);
+    width: 1px;
+    height: 100%;
+  }
+
+  .readonly-field {
+    margin: 0.5rem 0;
+  }
+
+  .readonly-label {
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: rgba(0, 0, 0, 0.6);
+    margin-bottom: 0.25rem;
+    display: block;
+  }
+
+  .readonly-value {
+    font-size: 1rem;
+    padding: 0.75rem 1rem;
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    white-space: pre-wrap;
+    min-height: 3.5rem;
+    display: flex;
+    align-items: center;
+  }
+
 }
 </style>

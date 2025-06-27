@@ -37,6 +37,9 @@ import {
   VFileInput,
   VSwitch,
   VSnackbar,
+  VAlert,
+  VCarousel,
+  VCarouselItem,
 } from 'vuetify/components'
 
 const vuetify = createVuetify({
@@ -76,6 +79,9 @@ const vuetify = createVuetify({
     VFileInput,
     VSwitch,
     VSnackbar,
+    VAlert,
+    VCarousel,
+    VCarouselItem,
   },
 })
 
