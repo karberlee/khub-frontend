@@ -170,40 +170,37 @@ const data = reactive({
     4: "error"
   },
   levelLabelMapping: {
-    0: 'D',
     1: 'N',
     2: 'L',
     3: 'M',
     4: 'H'
   },
   levelSelect: [
-    { title: "Default", value: 0 },
     { title: "Normal", value: 1 },
     { title: "Low", value: 2 },
     { title: "Medium", value: 3 },
     { title: "High", value: 4 },
   ],
   levelSearchSelect: [
-    { title: "All", value: -1 },
-    { title: "Default", value: 0 },
+    { title: "All", value: 0 },
     { title: "Normal", value: 1 },
     { title: "Low", value: 2 },
     { title: "Medium", value: 3 },
     { title: "High", value: 4 },
   ],
   noteList: [],
-  currentNoteItem: { level: 0 }
+  currentNoteItem: { level: 1 }
 })
 
 const searchText = ref("")
-const searchLevel = ref(-1)
+const searchLevel = ref(0)
 const editDialog = ref(false)
 const deleteDialog = ref(false)
 const formTitle = ref("New Note")
 
 // search note
 const searchNote = async () => {
-  if (searchText.value || searchLevel.value > -1) {
+  if (searchText.value || searchLevel.value > 0) {
     const query = {
       search: searchText.value || '',
       level: searchLevel.value
@@ -223,7 +220,7 @@ const searchNote = async () => {
 
 // open insert dialog
 const addNote = () => {
-  data.currentNoteItem = { level: 0 }
+  data.currentNoteItem = { level: 1 }
   formTitle.value = "New Note"
   editDialog.value = true
 }
@@ -252,7 +249,7 @@ const save = async () => {
 
 // close insert or edit dialog
 const close = async () => {
-  data.currentNoteItem = { level: 0 }
+  data.currentNoteItem = { level: 1 }
   editDialog.value = false
   store.commit('setGlobalLoading', false)
 }
