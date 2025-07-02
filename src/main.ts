@@ -22,8 +22,8 @@ app.config.errorHandler = (err: any, vm: any, info: string) => {
   console.error('Vue catch error:', err)
   const snackbarObj = {
     visible: true,
-    message: `Error: ${err.data.message}`,
-    detail: `Detail: ${err.data.detail}`,
+    message: `Error: ${err.data?.message || err}`,
+    detail: `Detail: ${err.data?.detail || err}`,
   }
   store.commit('setGlobalLoading', false)
   store.commit('setGlobalSnackbar', snackbarObj)

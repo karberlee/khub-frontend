@@ -65,7 +65,7 @@
         class="detail-dialog"
         @click:outside="closeAssetDetail"
       >
-        <v-card class="pa-4">
+        <v-card :class="`pa-4 ${data.bgColorMapping[data.currentAssetItem.status]}`">
           <v-card-title>
             <span class="text-h5">Asset Detail</span>
           </v-card-title>
@@ -92,14 +92,24 @@
                   </template>
                 </v-img>
 
-                <div class="readonly-field">
-                  <label class="readonly-label">Status</label>
-                  <div class="readonly-value">{{ data.currentAssetItem.status }}</div>
+                <div class="item-field">
+                  <label class="item-label">Name</label>
+                  <div class="item-display">{{ data.currentAssetItem.name }}</div>
                 </div>
 
-                <div class="readonly-field">
-                  <label class="readonly-label">Category</label>
-                  <div class="readonly-value">{{ data.currentAssetItem.category }}</div>
+                <div class="item-field">
+                  <label class="item-label">Category</label>
+                  <div class="item-display">{{ data.currentAssetItem.category }}</div>
+                </div>
+
+                <div class="item-field">
+                  <label class="item-label">Obtain Way</label>
+                  <div class="item-display">{{ data.currentAssetItem.obtainWay }}</div>
+                </div>
+
+                <div class="item-field">
+                  <label class="item-label">Status</label>
+                  <div class="item-display">{{ data.statusMapping[data.currentAssetItem.status] }}</div>
                 </div>
               </div>
 
@@ -123,37 +133,37 @@
                   <v-divider class="ma-4" />
 
                   <v-col cols="12" sm="6">
-                    <div class="readonly-field">
-                      <label class="readonly-label">Name</label>
-                      <div class="readonly-value">{{ data.currentAssetItem.name }}</div>
+                    <div class="item-field-col">
+                      <label class="item-label">Obtain Date</label>
+                      <div class="item-value">{{ getLocalTime(data.currentAssetItem.obtainDate) }}</div>
                     </div>
                   </v-col>
 
                   <v-col cols="12" sm="6">
-                    <div class="readonly-field">
-                      <label class="readonly-label">Price</label>
-                      <div class="readonly-value">{{ data.currentAssetItem.price }}</div>
+                    <div class="item-field-col">
+                      <label class="item-label">Owned Days</label>
+                      <div class="item-value">{{ getDaysDiffFromNow(data.currentAssetItem.obtainDate) }}</div>
                     </div>
                   </v-col>
 
                   <v-col cols="12" sm="6">
-                    <div class="readonly-field">
-                      <label class="readonly-label">Obtain Date</label>
-                      <div class="readonly-value">{{ data.currentAssetItem.obtainDate }}</div>
+                    <div class="item-field-col">
+                      <label class="item-label">Asset Price</label>
+                      <div class="item-value">{{ data.currentAssetItem.price }}</div>
                     </div>
                   </v-col>
 
                   <v-col cols="12" sm="6">
-                    <div class="readonly-field">
-                      <label class="readonly-label">Obtain Way</label>
-                      <div class="readonly-value">{{ data.currentAssetItem.obtainWay }}</div>
+                    <div class="item-field-col">
+                      <label class="item-label">Daily Cost</label>
+                      <div class="item-value">{{ getDailyCost(data.currentAssetItem) }}</div>
                     </div>
                   </v-col>
 
                   <v-col cols="12">
-                    <div class="readonly-field">
-                      <label class="readonly-label">Comment</label>
-                      <div class="readonly-value">
+                    <div class="item-field-col">
+                      <label class="item-label">Comment</label>
+                      <div class="item-value">
                         <pre>{{ data.currentAssetItem.comment }}</pre>
                       </div>
                     </div>
@@ -166,8 +176,8 @@
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn
-              color="blue-darken-1"
-              variant="tonal"
+              color="blue-grey"
+              variant="elevated"
               @click="closeAssetDetail"
             >
               Close
@@ -310,8 +320,8 @@
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn
-              color="blue-darken-1"
-              variant="tonal"
+              color="blue-grey"
+              variant="elevated"
               @click="closeAssetEdit"
             >
               Cancel
@@ -332,7 +342,7 @@
           <v-card-title class="text-h5">Are you sure you want to delete this item?</v-card-title>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue-darken-1" variant="tonal" @click="deleteCancel">Cancel</v-btn>
+            <v-btn color="blue-grey" variant="elevated" @click="deleteCancel">Cancel</v-btn>
             <v-btn color="error" variant="elevated" @click="deleteConfirm">OK</v-btn>
             <v-spacer></v-spacer>
           </v-card-actions>
@@ -499,6 +509,18 @@ const getLocalTime = (utcTime) => {
   return dayjs(utcTime).format('YYYY/MM/DD')
 }
 
+const getDaysDiffFromNow = (utcTime) => {
+  const now = dayjs().startOf('day') // 当前本地时间（去掉时分秒）
+  const target = dayjs(utcTime).startOf('day') // 目标 UTC 时间（去掉时分秒）
+  return now.diff(target, 'day') // 计算天数差
+}
+
+const getDailyCost = (asset) => {
+  const days = getDaysDiffFromNow(asset.obtainDate)
+  if (days <= 0) return 0
+  return parseFloat((asset.price / days).toFixed(2))
+}
+
 onMounted(() => {
   init()
 })
@@ -631,21 +653,27 @@ const init = async () => {
     height: 100%;
   }
 
-  .readonly-field {
+  .item-field {
     margin: 0.5rem 0;
   }
 
-  .readonly-label {
+  .item-label {
     font-weight: 500;
     font-size: 0.9rem;
-    color: rgba(0, 0, 0, 0.6);
+    // color: rgba(0, 0, 0, 0.6);
     margin-bottom: 0.25rem;
     display: block;
   }
 
-  .readonly-value {
+  .item-display {
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+
+  .item-value {
     font-size: 1rem;
     padding: 0.75rem 1rem;
+    color: #000000;
     background-color: #f5f5f5;
     border: 1px solid #ddd;
     border-radius: 5px;

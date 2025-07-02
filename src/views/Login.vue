@@ -129,7 +129,9 @@ export default {
           alert('callback:', res.data.message)
         }
       } catch (error) {
-        alert('handleGithubCallback:', error.data.message)
+        console.error('handleGithubCallback:', error.data.message)
+        throw error
+        // alert('handleGithubCallback:', error.data.message)
       } finally {
         store.commit('setGlobalLoading', false)
       }
