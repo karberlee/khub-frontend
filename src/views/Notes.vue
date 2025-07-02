@@ -41,20 +41,20 @@
         >
           <v-card
             hover
-            :color="data.colorMapping[note.level]"
             height="20rem"
             class="note-card"
             @click="editNote(note)"
           >
+            <div class="level-bar" :class="`bg-${data.colorMapping[note.level]}`"></div>
+
             <v-card-item>
-              <!-- <template v-slot:prepend>
-                <v-icon color="primary" icon="mdi-account"></v-icon>
-              </template> -->
-              <!-- <template v-slot:append>
-                <v-icon color="success" icon="mdi-check"></v-icon>
-              </template> -->
               <v-card-title>{{ note.title || "No Title" }}</v-card-title>
-              <v-card-subtitle>{{ getLocalTime(note.updateTime) || "No Update Time" }}</v-card-subtitle>
+              <v-card-subtitle class="card-subtitle">
+                <div class="level-notice" :class="`bg-${data.colorMapping[note.level]}`">
+                  {{ data.levelLabelMapping[note.level] }}
+                </div>
+                <span>{{ getLocalTime(note.updateTime) || "No Update Time" }}</span>
+              </v-card-subtitle>
             </v-card-item>
 
             <v-card-text>
@@ -168,6 +168,13 @@ const data = reactive({
     2: "info",
     3: "warning",
     4: "error"
+  },
+  levelLabelMapping: {
+    0: 'D',
+    1: 'N',
+    2: 'L',
+    3: 'M',
+    4: 'H'
   },
   levelSelect: [
     { title: "Default", value: 0 },
@@ -361,6 +368,28 @@ const init = async () => {
     100% {
       transform: translateY(-0.5rem) scale(1.05) rotate(9deg);
     }
+  }
+
+  .level-bar {
+    height: 4px;
+    width: 100%;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+  }
+
+  .card-subtitle {
+    display: flex;
+    align-items: center;
+  }
+
+  .level-notice {
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 50%;
+    font-size: 0.75rem;
+    display: grid;
+    place-items: center;
+    margin-right: 0.5rem;
   }
 }
 
