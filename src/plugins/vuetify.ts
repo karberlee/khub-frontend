@@ -40,6 +40,7 @@ import {
   VAlert,
   VCarousel,
   VCarouselItem,
+  VEmptyState,
 } from 'vuetify/components'
 
 const vuetify = createVuetify({
@@ -82,6 +83,7 @@ const vuetify = createVuetify({
     VAlert,
     VCarousel,
     VCarouselItem,
+    VEmptyState,
   },
 })
 

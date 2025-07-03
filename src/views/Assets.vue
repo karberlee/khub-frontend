@@ -42,7 +42,7 @@
                 <v-img
                   height="8rem"
                   max-width="14rem"
-                  src="/src/assets/images/panda.png"
+                  :src="defaultImage"
                   cover
                 ></v-img>
               </template>
@@ -86,7 +86,7 @@
                       class="mb-4"
                       height="18rem"
                       max-width="100%"
-                      src="/src/assets/images/panda.png"
+                      :src="defaultImage"
                       cover
                     ></v-img>
                   </template>
@@ -120,7 +120,7 @@
               <div class="right-side">
                 <v-row>
                   <v-col cols="12">
-                    <v-carousel height="30rem" show-arrows="hover">
+                    <v-carousel v-if="data.currentAssetItem.images?.length > 0" height="30rem" show-arrows="hover">
                       <v-carousel-item
                         v-for="(img, i) in data.currentAssetItem.images"
                         :key="i"
@@ -128,6 +128,15 @@
                         <v-img :src="baseUrl + '/' + img" cover height="30rem" />
                       </v-carousel-item>
                     </v-carousel>
+
+                    <v-empty-state
+                      v-else
+                      height="30rem"
+                      headline="Empty Image List"
+                      title="Images not exist"
+                      text="No images have been uploaded for this asset"
+                      :image="defaultImage"
+                    ></v-empty-state>
                   </v-col>
 
                   <v-divider class="ma-4" />
@@ -360,6 +369,7 @@ import dayjs from 'dayjs'
 const { appContext } = getCurrentInstance()
 const { $get, $post, $patch, $delete } = appContext.config.globalProperties
 import ImageUploader from '@/components/ImageUploader.vue'
+import defaultImage from '@/assets/images/panda.png'
 
 const store = useStore()
 
