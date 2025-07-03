@@ -68,7 +68,7 @@
         v-model="editDialog"
         max-width="50rem"
       >
-        <v-card>
+        <v-card class="pa-4">
           <v-card-title>
             <span class="text-h5">{{ formTitle }}</span>
           </v-card-title>
@@ -140,7 +140,7 @@
       </v-dialog>
 
       <v-dialog v-model="deleteDialog" max-width="50rem">
-        <v-card>
+        <v-card class="pa-4">
           <v-card-title class="text-h5">Are you sure you want to delete this item?</v-card-title>
           <v-card-actions>
             <v-spacer></v-spacer>
@@ -343,29 +343,33 @@ const init = async () => {
 }
 
 .note-card {
-  transition: transform 0.5s ease, box-shadow 0.3s ease;
-  transform-origin: top left; /* 设置旋转中心为左上角 */
+  // transition: transform 0.5s ease, box-shadow 0.3s ease;
+  // transform-origin: top left; /* 设置旋转中心为左上角 */
   
-  &:hover {
-    animation: float-swing-once 1s ease-in-out 0s 1 forwards;
-    box-shadow: 0 12px 24px rgba(0,0,0,0.2);
-    z-index: 1;
-  }
+  // &:hover {
+  //   animation: float-swing-once 1s ease-in-out 0s 1 forwards;
+  //   box-shadow: 0 12px 24px rgba(0,0,0,0.2);
+  //   z-index: 1;
+  // }
 
-  @keyframes float-swing-once {
-    0% {
-      transform: translateY(-0.5rem) scale(1.05) rotate(0deg);
-    }
-    30% {
-      transform: translateY(-0.5rem) scale(1.05) rotate(12deg);
-    }
-    60% {
-      transform: translateY(-0.5rem) scale(1.05) rotate(6deg);
-    }
-    100% {
-      transform: translateY(-0.5rem) scale(1.05) rotate(9deg);
-    }
-  }
+  // @keyframes float-swing-once {
+  //   0% {
+  //     transform: translateY(-0.5rem) scale(1.05) rotate(0deg);
+  //   }
+  //   30% {
+  //     transform: translateY(-0.5rem) scale(1.05) rotate(12deg);
+  //   }
+  //   60% {
+  //     transform: translateY(-0.5rem) scale(1.05) rotate(6deg);
+  //   }
+  //   100% {
+  //     transform: translateY(-0.5rem) scale(1.05) rotate(9deg);
+  //   }
+  // }
+
+  transition: box-shadow 0.2s ease;
+  border-radius: 5px;
+  overflow: hidden;
 
   .level-bar {
     height: 4px;

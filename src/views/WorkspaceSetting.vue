@@ -53,7 +53,7 @@
       max-width="50rem"
       @click:outside="cancelTragger"
     >
-      <v-card>
+      <v-card class="pa-4">
         <v-card-title>
           <span class="text-h5">Authorization</span>
         </v-card-title>
@@ -83,7 +83,7 @@
       max-width="50rem"
       @click:outside="close"
     >
-      <v-card>
+      <v-card class="pa-4">
         <v-card-title>
           <span class="text-h5">{{ formTitle }}</span>
         </v-card-title>
@@ -109,7 +109,7 @@
 
     <!-- delete dialog -->
     <v-dialog v-model="deleteDialog" max-width="50rem" @click:outside="deleteCancel">
-      <v-card>
+      <v-card class="pa-4">
         <v-card-title class="text-h5">Are you sure you want to delete this workspace?</v-card-title>
         <v-card-actions>
           <v-spacer></v-spacer>

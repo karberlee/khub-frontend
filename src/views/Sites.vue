@@ -56,7 +56,7 @@
         v-model="editDialog"
         max-width="50rem"
       >
-        <v-card>
+        <v-card class="pa-4">
           <v-card-title>
             <span class="text-h5">{{ formTitle }}</span>
           </v-card-title>
@@ -143,7 +143,7 @@
       </v-dialog>
 
       <v-dialog v-model="deleteDialog" max-width="50rem">
-        <v-card>
+        <v-card class="pa-4">
           <v-card-title class="text-h5">Are you sure you want to delete this item?</v-card-title>
           <v-card-actions>
             <v-spacer></v-spacer>
