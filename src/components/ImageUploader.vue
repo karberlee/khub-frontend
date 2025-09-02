@@ -28,7 +28,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, defineExpose  } from 'vue'
+import { ref, onMounted } from 'vue'
 import { uploadImage } from "@/utils/common"
 
 // Props

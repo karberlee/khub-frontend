@@ -36,7 +36,7 @@
           >
             <v-img
               height="200px"
-              :src="`/images/samples/00${i + 1}.jpg`"
+              :src="`/images/samples/00${i % 8 + 1}.jpg`"
               cover
               class="card-img"
             ></v-img>
@@ -70,6 +70,7 @@
 import { ref, reactive, computed, watch, onMounted, getCurrentInstance } from "vue"
 import { useRouter, useRoute } from "vue-router"
 import { useStore } from "vuex"
+import dayjs from 'dayjs'
 import * as marked from 'marked'
 const { appContext } = getCurrentInstance()
 const { $get, $post, $patch, $delete } = appContext.config.globalProperties
@@ -96,8 +97,7 @@ const renderMarkdownToText = (content) => {
 }
 
 const getLocalTime = (utcTime) => {
-  const date = new Date(utcTime)
-  return date.toLocaleString().slice(0, 10)
+  return dayjs(utcTime).format('YYYY/MM/DD')
 }
 
 const replaceRouter = function (path) {

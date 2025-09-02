@@ -157,6 +157,7 @@
 <script setup>
 import { ref, reactive, computed, watch, onMounted, getCurrentInstance } from "vue"
 import { useStore } from "vuex"
+import dayjs from 'dayjs'
 const { appContext } = getCurrentInstance()
 const { $get, $post, $patch, $delete } = appContext.config.globalProperties
 
@@ -275,8 +276,7 @@ const deleteConfirm = async () => {
 }
 
 const getLocalTime = (utcTime) => {
-  const date = new Date(utcTime)
-  return date.toLocaleString()
+  return dayjs(utcTime).format('YYYY/MM/DD HH:mm:ss')
 }
 
 onMounted(() => {
