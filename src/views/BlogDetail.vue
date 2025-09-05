@@ -273,7 +273,8 @@ const init = async () => {
     position: -webkit-sticky;  /* For Safari support */
     position: sticky;          /* For modern browsers */
     top: 6.5rem;                    /* 固定在顶部 */
-    height: 100%;             /* 确保它覆盖整个视窗的高度 */
+    height: 100%;
+    max-height: calc(100vh - 7.5rem);             /* 确保它覆盖整个视窗的高度 */
     overflow-y: auto;          /* 如果内容过多，可以滚动 */
   }
 }
